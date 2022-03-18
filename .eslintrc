@@ -6,5 +6,6 @@
    "rules": {
     "linebreak-style": ["error", "windows"],
     "react/jsx-filename-extension": [0, { "extensions": [".js", ".jsx"] }],
+    "ignoreNonDeclaration": true 
    }
 }

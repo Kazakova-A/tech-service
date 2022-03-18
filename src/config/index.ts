@@ -1,27 +1,22 @@
 import * as dotenv from 'dotenv';
 
-
-
 dotenv.config();
 
-
-
 const { env = {} } = process;
-
-
 
 // Application environemnts
 
 export const ENVS = {
-
   development: 'development',
-
   staging: 'staging',
-
   production: 'production',
-
 };
 
+export const EMPLOYEE_DATA = {
+  zip: 435353453,
+  technique: 'phone,tv,desktop',
+  brands: 'lg,hp,samsung',
+}
 
 
 // Node environment
@@ -34,7 +29,18 @@ export const { NODE_ENV = ENVS.production } = env;
 
 export const PORT = Number(env.PORT) || 3001;
 
-
+// Database connection options
+export const DATABASE = {
+  database: env.DATABASE_NAME,
+  dialect: 'postgres',
+  env: env.DATABASE_ENV || ENVS.production,
+  host: env.DATABASE_HOSTNAME,
+  logging: env.DATABASE_LOGGING === 'true',
+  password: env.DATABASE_PASSWORD,
+  port: Number(env.DATABASE_PORT),
+  seeding: env.DATABASE_SEEDING === 'true',
+  username: env.DATABASE_USERNAME,
+};
 
 // Server response statuses
 
