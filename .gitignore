@@ -1,0 +1,14 @@
+# IDE
+.DS_Store
+.idea/
+.vscode/
+
+# Project directories
+docs/
+docs/
+node_modules/
+# Project files
+.env
+migrations.json
+package-lock.json
+build/

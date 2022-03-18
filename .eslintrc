@@ -1,0 +1,10 @@
+{
+  "extends": ["airbnb-base", "airbnb-typescript"],
+  "parserOptions": {
+     "project": "./tsconfig.json"
+   },
+   "rules": {
+    "linebreak-style": ["error", "windows"],
+    "react/jsx-filename-extension": [0, { "extensions": [".js", ".jsx"] }],
+   }
+}
