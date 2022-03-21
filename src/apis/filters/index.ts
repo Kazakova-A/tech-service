@@ -5,6 +5,6 @@ import filterBySpecializations from './by-specializations.controller';
 
 const router = Router();
 router.get('/zip/:zipcode', filterByZip);
-router.get('/zip/specialization/:zipcode', filterBySpecializations);
+router.get('/specialization/:zipcode', filterBySpecializations);
 
 export default router;

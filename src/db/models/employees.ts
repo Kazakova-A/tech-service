@@ -2,23 +2,27 @@ import { Generic } from '../types';
 
 export interface EmployeesData extends Generic {
   zip: number;
-  technique: string;
-  brands: string;
+  firstName: string;
+  lastName: string;
+  email: string;
 };
 
 export default (
   database: any,
   DataTypes: any,
 ) => database.define(
-  'Users',
+  'Employees',
   {
     zip: {
       type: DataTypes.INTEGER,
     },
-    technique: {
+    firstName: {
       type: DataTypes.STRING,
     },
-    brands: {
+    lastName: {
+      type: DataTypes.STRING,
+    },
+    email: {
       type: DataTypes.STRING,
     },
     isDeleted: {

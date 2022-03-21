@@ -12,13 +12,6 @@ export const ENVS = {
   production: 'production',
 };
 
-export const EMPLOYEE_DATA = {
-  zip: 435353453,
-  technique: 'phone,tv,desktop',
-  brands: 'lg,hp,samsung',
-}
-
-
 // Node environment
 
 export const { NODE_ENV = ENVS.production } = env;

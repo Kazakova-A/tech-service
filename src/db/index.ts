@@ -4,9 +4,19 @@ import { DATABASE } from '../config';
 
 // models
 import Employees, { EmployeesData } from './models/employees';
+import Brands, { BrandsData } from './models/brands';
+import Technique, { TechniqueData } from './models/technique';
+import SupportedBrands, { SupportedBrandsData } from './models/supportedBrands';
+import SupportedTechnique, { supportedTechniqueData } from './models/supportedTechnique';
 
 // export model interfaces
-export { EmployeesData };
+export {
+  EmployeesData,
+  BrandsData,
+  TechniqueData,
+  SupportedBrandsData,
+  supportedTechniqueData,
+};
 
 const {
   database,
@@ -38,6 +48,11 @@ const connection = new Sequelize(
 
 // model connection
 db.Employees = Employees(connection, DataTypes);
+db.Brands = Brands(connection, DataTypes);
+db.Technique = Technique(connection, DataTypes);
+db.SupportedBrands = SupportedBrands(connection, DataTypes);
+db.SupportedTechnique = SupportedTechnique(connection, DataTypes);
+
 
 
 // create associations
