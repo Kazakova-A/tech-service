@@ -3,7 +3,6 @@ export interface Generic {
   isDeleted: boolean;
   created: number;
   createdAt: string;
-  entity: string;
   updated: number;
   updatedAt: string;
 };

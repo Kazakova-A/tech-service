@@ -35,10 +35,7 @@ export default (
     updated: {
       type: DataTypes.INTEGER,
     },
-    entity: {
-      defaultValue: 'Employees',
-      type: DataTypes.STRING,
-    },
+ 
   },
   {
     tableName: 'Employees',
