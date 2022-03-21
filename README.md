@@ -104,5 +104,6 @@ See the [DATABASE.md](DATABASE.md) for details
 
 ### Demo endpoints:
 http://localhost:2121/filters/zip/:zipCode - по зипу
+
 http://localhost:2121/filters/specialization/:zipCode?brand=Samsung&technique=TV
 

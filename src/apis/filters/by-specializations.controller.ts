@@ -5,7 +5,8 @@ import {
   SERVER_MESSAGES as sm,
 } from '../../config';
 import response from '../../utilities/responses';
-import db from '../../db';
+import db, { EmployeesData as EmployeesInterface } from '../../db';
+import getFetchedData from '../../utilities/parseAsyncRequest';
 
 export default async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -19,7 +20,7 @@ export default async (req: Request, res: Response): Promise<Response> => {
     }
 
     const query = `
-        SELECT e.email, e."firstName", e.zip, b.name as "brand", t."name" as "technique" FROM "Employees" e  
+        SELECT e."id", e."email", e."firstName", e."zip", b."name" as "brand", t."name" as "technique" FROM "Employees" e  
         LEFT JOIN "SupportedTechnique" st ON e."id" = st."employeeId"
         LEFT JOIN "SupportedBrands" sb ON e."id" = sb."employeeId"
         LEFT JOIN "Brands" b ON b."id" = sb."brandId" 
@@ -29,13 +30,19 @@ export default async (req: Request, res: Response): Promise<Response> => {
         AND t."name" = '${technique}'
       ;
     `
-    const [results = []] = await db.connection.query(query)
+    const [availableEmployees = []] = await db.connection.query(query)
 
-    if (!results.length) {
+    if (!availableEmployees.length) {
       return response(req, res, rs[404], sm.notFound);
     }
 
-    return response(req, res, rs[200], sm.ok, results);
+    const ids = availableEmployees.map((item: EmployeesInterface) => item.id)
+
+    const employees = await getFetchedData(`https://62061fb7161670001741bf36.mockapi.io/api/empoyees`);
+
+    const result = employees.filter((item: EmployeesInterface) => ids.includes(Number(item.id)))
+    console.log('--------result', ids, employees)
+    return response(req, res, rs[200], sm.ok, result);
   } catch (error) {
     return response(req, res, rs[500], sm.internalServerError, error);
   }
