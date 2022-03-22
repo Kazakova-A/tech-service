@@ -1,8 +1,3 @@
-/**
- * Numbers generator
- * @param {number} amount - array length
- * @returns {number} 
- */
 export default function* (amount: number = 10) {
   let current = 1;
 

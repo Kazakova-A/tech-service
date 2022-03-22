@@ -41,7 +41,7 @@ export default async (req: Request, res: Response): Promise<Response> => {
     const employees = await getFetchedData(`https://62061fb7161670001741bf36.mockapi.io/api/empoyees`);
 
     const result = employees.filter((item: EmployeesInterface) => ids.includes(Number(item.id)))
-    console.log('--------result', ids, employees)
+
     return response(req, res, rs[200], sm.ok, result);
   } catch (error) {
     return response(req, res, rs[500], sm.internalServerError, error);

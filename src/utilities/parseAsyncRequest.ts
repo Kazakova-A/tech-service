@@ -8,7 +8,6 @@ const getFetchedData = async (
     const result = await fetch(url, payload);
     return result.json();
   } catch (error) {
-    console.log('================err', error);
     throw new Error(error);
   }
 };

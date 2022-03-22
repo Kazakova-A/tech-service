@@ -3,16 +3,6 @@ import { RESPONSE_STATUSES as rs, SERVER_MESSAGES as sm } from '../config';
 
 export { Response };
 
-/**
- * Create and send a response
- * @param {*} Request - request object
- * @param {*} Response - response object
- * @param {number|string} status - response code
- * @param {string} message - response message
- * @param {*} data - any data to send
- * @returns {void}
- */
-
 export default (
   Request: any,
   Response: any,
