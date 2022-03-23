@@ -19,32 +19,31 @@ export {
 };
 
 const {
-  database,
   host,
   logging,
-  password,
   port,
-  username,
 } = DATABASE;
 
 const db: any = {};
 
 // create the connection
-const connection = new Sequelize(
-  database,
-  username,
-  password,
-  {
-    dialect: 'postgres',
-    host,
-    logging,
-    pool: {
-      idle: 30000,
-      max: 100,
-    },
-    port,
+const connection = new Sequelize(DATABASE.databaseUrl, {
+  dialect: 'postgres',
+  host,
+  logging,
+  pool: {
+    idle: 30000,
+    max: 100,
   },
-);
+  port,
+  dialectOptions: {
+    ssl: {
+      sslmode: 'require',
+      rejectUnauthorized: false,
+    }
+  }
+},)
+
 
 // model connection
 db.Employees = Employees(connection, DataTypes);
