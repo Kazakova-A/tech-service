@@ -24,6 +24,7 @@ export const PORT = Number(env.PORT) || 3001;
 
 // Database connection options
 export const DATABASE = {
+  databaseUrl: env.DATABASE_URL,
   database: env.DATABASE_NAME,
   dialect: 'postgres',
   env: env.DATABASE_ENV || ENVS.production,
