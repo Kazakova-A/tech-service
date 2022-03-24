@@ -13,9 +13,16 @@ export default (
     name: {
       type: DataTypes.STRING,
     },
+    created: {
+      type: DataTypes.INTEGER,
+    },
+    updated: {
+      type: DataTypes.INTEGER,
+    },
   },
   {
     tableName: 'Brands',
     timestamps: true,
   },
+  
 );

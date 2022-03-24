@@ -31,6 +31,12 @@ export default (
         },
         type: DataTypes.INTEGER,
       },
+      created: {
+        type: DataTypes.INTEGER,
+      },
+      updated: {
+        type: DataTypes.INTEGER,
+      },
   },
   {
     tableName: 'SupportedBrands',
