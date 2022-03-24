@@ -32,7 +32,7 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
 
     const employeesPromises = list.map((item, index) => (
       db.Employees.create({
-        zip: (DEFAULT_ZIP + index),
+        zip: index === 1 ? DEFAULT_ZIP : (DEFAULT_ZIP + index),
         firstName: `Peter the ${index}`,
         lastName: `Romanov`,
         email: `dummy${index}@example.com`,
