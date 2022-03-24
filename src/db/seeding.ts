@@ -1,11 +1,11 @@
-import { BRANDS, TECHNIQUE, DEFAULT_ZIP } from './constants';
+import { BRANDS, TYPES, DEFAULT_ZIP } from './constants';
 
 import log from '../utilities/log';
 import getSeconds from '../utilities/get-seconds';
 import generate from '../utilities/generator';
 import {
   BrandsData as BrandsInterface,
-  TechniqueData as TechniqueInterface,
+  TypesData as TypesInterface,
 } from '../db';
 
 export default async (db: any, seeding: boolean = false): Promise<Error | void> => {
@@ -50,18 +50,18 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
       updated: now,
     }));
 
-    const techniqueCreatorsPromises = TECHNIQUE.map(technique => db.Technique.create({
-      name: technique,
+    const typesCreatorsPromises = TYPES.map(type => db.Types.create({
+      name: type,
       created: now,
       updated: now,
     }));
 
-    await Promise.all([...brandCreatorsPromises, ...techniqueCreatorsPromises])
-    await Promise.all([...brandCreatorsPromises, ...techniqueCreatorsPromises])
+    await Promise.all([...brandCreatorsPromises, ...typesCreatorsPromises])
     
-    const brandsAndTypes = [...generate(42)];
+    const brands = [...generate(42)];
+    const types = [...generate(12)];
 
-    const supportedBrandsPromises = brandsAndTypes.map((item) => (
+    const supportedBrandsPromises = brands.map((item) => (
         db.SupportedBrands.create({
         brandId: item,
         employeeId: employees[0].id,
@@ -70,16 +70,16 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
       })
     ));
 
-    const supportedTechniquePromises = brandsAndTypes.map((item) => (
-      db.SupportedTechnique.create({
-      techniqueId: item,
+    const supportedTypesPromises = types.map((item) => (
+      db.SupportedTypes.create({
+      typeId: item,
       employeeId: employees[0].id,
       created: now,
       updated: now,
     })
   ));
 
-  await Promise.all(supportedBrandsPromises)
+  await Promise.all([...supportedBrandsPromises, ...supportedTypesPromises])
 
     return log('-- database: seeding is done');
   } catch (error) {

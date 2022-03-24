@@ -1,15 +1,15 @@
 import { Generic } from '../types';
 
-export interface supportedTechniqueData extends Generic {
+export interface SupportedTypesData extends Generic {
   employeeId: number;
-  techniqueId: number
+  typeId: number
 };
 
 export default (
   database: any,
   DataTypes: any,
 ) => database.define(
-  'SupportedTechnique',
+  'SupportedTypes',
   {
       employeeId: {
         allowNull: false,
@@ -21,13 +21,13 @@ export default (
         },
         type: DataTypes.INTEGER,
       },
-      techniqueId: {
+      typeId: {
         allowNull: false,
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
         references: {
           key: 'id',
-          model: 'Technique',
+          model: 'Types',
         },
         type: DataTypes.INTEGER,
       },
@@ -39,7 +39,7 @@ export default (
       },
   },
   {
-    tableName: 'SupportedTechnique',
+    tableName: 'SupportedTypes',
     timestamps: true,
   },
 );

@@ -43,7 +43,7 @@ export const BRANDS = [
     'zline',
 ]
 
-export const TECHNIQUE = [
+export const TYPES = [
     'refrigerator',
     'freezer',
     'dryer',

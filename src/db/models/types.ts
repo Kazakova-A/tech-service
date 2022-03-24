@@ -1,6 +1,6 @@
 import { Generic } from '../types';
 
-export interface TechniqueData extends Generic {
+export interface TypesData extends Generic {
   name: string;
 };
 
@@ -8,7 +8,7 @@ export default (
   database: any,
   DataTypes: any,
 ) => database.define(
-  'Technique',
+  'Types',
   {
     name: {
       type: DataTypes.STRING,
@@ -21,7 +21,7 @@ export default (
     },
   },
   {
-    tableName: 'Technique',
+    tableName: 'Types',
     timestamps: true,
   },
 );
