@@ -38,7 +38,6 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
     ));
 
     const employees = await Promise.all(employeesPromises)
-
    
     const brandCreatorsPromises = BRANDS.map(brand => db.Brands.create({
       value: brand,

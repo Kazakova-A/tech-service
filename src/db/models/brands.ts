@@ -28,5 +28,4 @@ export default (
     tableName: 'Brands',
     timestamps: true,
   },
-  
 );
