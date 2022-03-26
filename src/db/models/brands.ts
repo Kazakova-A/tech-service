@@ -1,7 +1,8 @@
 import { Generic } from '../types';
 
 export interface BrandsData extends Generic {
-  name: string;
+  value: string;
+  label: string;
 };
 
 export default (
@@ -10,7 +11,10 @@ export default (
 ) => database.define(
   'Brands',
   {
-    name: {
+    value: {
+      type: DataTypes.STRING,
+    },
+    label: {
       type: DataTypes.STRING,
     },
     created: {

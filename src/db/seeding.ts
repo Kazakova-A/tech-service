@@ -3,15 +3,11 @@ import { BRANDS, TYPES, DEFAULT_ZIP } from './constants';
 import log from '../utilities/log';
 import getSeconds from '../utilities/get-seconds';
 import generate from '../utilities/generator';
-import {
-  BrandsData as BrandsInterface,
-  TypesData as TypesInterface,
-} from '../db';
 
 export default async (db: any, seeding: boolean = false): Promise<Error | void> => {
   try {
     const now = getSeconds();
-  
+
     if (!seeding) {
       return log('-- database: seeding is disabled');
     }
@@ -45,16 +41,22 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
 
    
     const brandCreatorsPromises = BRANDS.map(brand => db.Brands.create({
-      name: brand,
+      value: brand,
+      label: brand.replace(/_/g, " ")
+        .replace(/(?:^|\s)\S/g, (symbol) => symbol.toUpperCase()),
       created: now,
       updated: now,
     }));
 
-    const typesCreatorsPromises = TYPES.map(type => db.Types.create({
-      name: type,
-      created: now,
-      updated: now,
-    }));
+    const typesCreatorsPromises = TYPES.map(type => {
+      const typeStr =  type.replace(/_/g, " ");
+      return  db.Types.create({
+        value: type,
+        label: typeStr.charAt(0).toUpperCase() + typeStr.slice(1),
+        created: now,
+        updated: now,
+      })}
+    );
 
     await Promise.all([...brandCreatorsPromises, ...typesCreatorsPromises])
     

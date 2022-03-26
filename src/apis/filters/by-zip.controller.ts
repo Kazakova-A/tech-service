@@ -12,9 +12,9 @@ export default async (req: Request, res: Response): Promise<Response> => {
   try {
     const { params: { zipcode } } = req;
 
-    const availableEmployees = await db.Employees.findAll({ where: { zip: Number(zipcode) } });
+    const availableEmployees: EmployeesInterface[] = await db.Employees.findAll({ where: { zip: Number(zipcode) } });
 
-    if (!availableEmployees) {
+    if (!availableEmployees.length) {
         return response(req, res, rs[404], sm.notFound);
     }
 
@@ -25,7 +25,6 @@ export default async (req: Request, res: Response): Promise<Response> => {
     const result = employees.filter((item: EmployeesInterface) => ids.includes(Number(item.id)))
 
     return response(req, res, rs[200], sm.ok, result);
-
     } catch(error) {
       return response(req, res, rs[500], sm.internalServerError, error);
     }
