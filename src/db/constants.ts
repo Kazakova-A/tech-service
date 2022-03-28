@@ -1,6 +1,7 @@
 export const BRANDS = [
+    'asko',
     'aga',
-    'amerikan_range',
+    'american_range',
     'alfresco',
     'bertazzoni',
     'blomberg',
@@ -17,10 +18,10 @@ export const BRANDS = [
     'fisher_&_paykel',
     'frigidaire',
     'gaggenau',
-    'a_cornue',
+    'la_cornue',
     'lg',
     'lynx',
-    'leibherr',
+    'liebher',
     'marvel',
     'miele',
     'maytag',
@@ -54,7 +55,7 @@ export const TYPES = [
     'vent_hood',
     'dishwasher',
     'washer',
-    'dryer',
+    'oven',
     'garbage_disposal',
 ]
 
