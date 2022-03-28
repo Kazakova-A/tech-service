@@ -12,7 +12,7 @@
     "dist": "sh ./scripts/dist.sh",
     "dev": "node -r dotenv/config ./build/db/sync.js && nodemon ./build/index.js",
     "drop": "tsc && node -r dotenv/config ./build/db/drop.js",
-    "clean-deps": "rm -rf node_modules yarn.lock",
+    "clean-deps": "rm -rf node_modules package-lock.json",
     "watch": "tsc --watch",
     "lint": "eslint ",
     "format": "eslint src/**/*.ts --fix"
