@@ -45,7 +45,6 @@ export default async (req: Request, res: Response): Promise<Response> => {
 
     return response(req, res, rs[200], sm.ok, result);
   } catch (error) {
-    console.log('================================', error)
     return response(req, res, rs[500], sm.internalServerError, error);
   }
 };
