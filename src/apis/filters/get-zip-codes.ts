@@ -22,7 +22,8 @@ export default async (req: Request, res: Response): Promise<Response> => {
           if (zip) {
               accum.push({
                   value: zip.zip,
-                  label: `${zip.zip} (${zip.city})`
+                  label: zip.zip,
+                  city: zip.city,
               })
           }
           return accum;
