@@ -6,11 +6,11 @@ export interface JobsData extends Generic {
   customerId: number;
   note: string | null;
   workStatus: JobStatuses;
-  onMyWayAt: string | null;
-  startedAt: string | null;
-  completedAt: string | null;
-  scheduledStart: string | null;
-  scheduledEnd: string | null;
+  onMyWayAt: number | null;
+  startedAt: number | null;
+  completedAt: number | null;
+  scheduledStart: number | null;
+  scheduledEnd: number | null;
   arrivalWindow: number;
   totalAmount: number;
   outstandingBalance: number;
@@ -46,19 +46,19 @@ export default (
       type: DataTypes.STRING,
     },
     onMyWayAt: {
-      type: DataTypes.STRING,
+      type: DataTypes.BIGINT,
     },
     startedAt: {
-      type: DataTypes.STRING,
+      type: DataTypes.BIGINT,
     },
     completedAt: {
-      type: DataTypes.STRING,
+      type: DataTypes.BIGINT,
     },
     scheduledStart: {
-      type: DataTypes.STRING,
+      type: DataTypes.BIGINT,
     },
     scheduledEnd: {
-      type: DataTypes.STRING,
+      type: DataTypes.BIGINT,
     },
     arrivalWindow: {
       type: DataTypes.INTEGER,

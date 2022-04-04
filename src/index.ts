@@ -5,6 +5,7 @@ import * as bodyParser from 'body-parser';
 import { PORT } from './config';
 
 import filters from './apis/filters';
+import jobs from './apis/jobs';
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(cors());
 
 // routing
 app.use('/filters', filters);
+app.use('/jobs', jobs);
 
 // start the Express server
 app.listen(PORT, () => {
