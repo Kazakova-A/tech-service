@@ -6,3 +6,10 @@ export interface Generic {
   updated: number;
   updatedAt: string;
 };
+
+export enum JobStatuses {
+  unscheduled ='unscheduled',
+  scheduled ='scheduled',
+  in_progress ='in_progress',
+  completed ='completed',
+}

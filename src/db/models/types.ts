@@ -17,6 +17,10 @@ export default (
     label: {
       type: DataTypes.STRING,
     },
+    isDeleted: {
+      defaultValue: false,
+      type: DataTypes.BOOLEAN,
+    },
     created: {
       type: DataTypes.INTEGER,
     },
