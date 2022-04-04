@@ -1,3 +1,5 @@
+import { JobStatuses } from './types';
+
 export const BRANDS = [
     'asko',
     'aga',
@@ -60,3 +62,52 @@ export const TYPES = [
 ]
 
 export const DEFAULT_ZIP = 94022;
+
+export const JOBS_MOCK_DATA: any[] = [
+    {
+        invoiceNumber: '3882',
+        description: 'Online Booking - Diagnistic',
+        note: null,
+        workStatus: JobStatuses.scheduled,
+        onMyWayAt: null,
+        startedAt: null,
+        completedAt: null,
+        scheduledStart: '2022-04-30T9:00:00Z',
+        scheduledEnd: '2022-04-30T12:00:00Z',
+        arrivalWindow: 120,
+        totalAmount: 7500,
+        outstandingBalance: 7500,
+        employeeId: 1,
+    },
+    {
+        invoiceNumber: '3882',
+        description: 'Online Booking - Diagnistic',
+        note: null,
+        workStatus: JobStatuses.scheduled,
+        onMyWayAt: null,
+        startedAt: null,
+        completedAt: null,
+        scheduledStart: '2022-04-30T8:00:00Z',
+        scheduledEnd: '2022-04-30T12:00:00Z',
+        arrivalWindow: 120,
+        totalAmount: 7500,
+        outstandingBalance: 7500,
+        employeeId: 2,
+    },
+    {
+        invoiceNumber: '3882',
+        description: 'Online Booking - Diagnistic',
+        customerId: 2,
+        note: null,
+        workStatus: JobStatuses.scheduled,
+        onMyWayAt: null,
+        startedAt: null,
+        completedAt: null,
+        scheduledStart: '2022-04-30T:16:00Z',
+        scheduledEnd: '2022-04-30T18:00:00Z',
+        arrivalWindow: 120,
+        totalAmount: 7500,
+        outstandingBalance: 7500,
+        employeeId: 2,
+    },
+]

@@ -31,6 +31,10 @@ export default (
         },
         type: DataTypes.INTEGER,
       },
+      isDeleted: {
+        defaultValue: false,
+        type: DataTypes.BOOLEAN,
+      },
       created: {
         type: DataTypes.INTEGER,
       },
