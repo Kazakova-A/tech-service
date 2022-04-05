@@ -41,13 +41,14 @@ const connection = new Sequelize(DATABASE.databaseUrl, {
     idle: 30000,
     max: 100,
   },
+  query:{ raw: true },
   port,
   dialectOptions: {
     ssl: {
       sslmode: 'require',
       rejectUnauthorized: false,
     }
-  }
+  },
 },)
 
 

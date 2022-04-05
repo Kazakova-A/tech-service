@@ -31,6 +31,7 @@
     "dotenv": "^16.0.0",
     "eslint-config-airbnb-typescript": "^16.1.2",
     "express": "^4.16.4",
+    "moment": "^2.29.2",
     "node-fetch": "^2.6.7",
     "pg": "^8.7.3",
     "prettier": "^2.6.0",

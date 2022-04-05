@@ -72,12 +72,12 @@ export const JOBS_MOCK_DATA: any[] = [
         onMyWayAt: null,
         startedAt: null,
         completedAt: null,
-        scheduledStart: '1651309200000',
-        scheduledEnd: '1651320000000',
+        scheduledStart: '1651294800', // 8:00
+        scheduledEnd: '1651302000', // 10:00
         arrivalWindow: 120,
         totalAmount: 7500,
         outstandingBalance: 7500,
-        employeeId: 1,
+        // employeeId: 1,
     },
     {
         invoiceNumber: '3882',
@@ -87,12 +87,12 @@ export const JOBS_MOCK_DATA: any[] = [
         onMyWayAt: null,
         startedAt: null,
         completedAt: null,
-        scheduledStart: '1651305600000',
-        scheduledEnd: '1651320000000',
+        scheduledStart: '1651302000', // 10:00
+        scheduledEnd: '1651309200', // 12:00
         arrivalWindow: 120,
         totalAmount: 7500,
         outstandingBalance: 7500,
-        employeeId: 2,
+        // employeeId: 1,
     },
     {
         invoiceNumber: '3882',
@@ -103,8 +103,8 @@ export const JOBS_MOCK_DATA: any[] = [
         onMyWayAt: null,
         startedAt: null,
         completedAt: null,
-        scheduledStart: '1651334400000',
-        scheduledEnd: '1651341600000',
+        scheduledStart: '1651309200', // 12:00
+        scheduledEnd: '1651316400',  // 14:00
         arrivalWindow: 120,
         totalAmount: 7500,
         outstandingBalance: 7500,

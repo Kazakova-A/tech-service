@@ -5,6 +5,8 @@ export interface EmployeesData extends Generic {
   firstName: string;
   lastName: string;
   email: string;
+  startTime: number;
+  endTime: number;
 };
 
 export default (
@@ -25,6 +27,12 @@ export default (
     email: {
       type: DataTypes.STRING,
     },
+    startTime: {
+      type: DataTypes.INTEGER,
+    },
+    endTime: {
+      type: DataTypes.INTEGER,
+    },
     isDeleted: {
       defaultValue: false,
       type: DataTypes.BOOLEAN,
@@ -35,7 +43,6 @@ export default (
     updated: {
       type: DataTypes.INTEGER,
     },
- 
   },
   {
     tableName: 'Employees',

@@ -4,7 +4,6 @@ import {
   DEFAULT_ZIP,
   JOBS_MOCK_DATA,
 } from './constants';
-
 import log from '../utilities/log';
 import getSeconds from '../utilities/get-seconds';
 import generate from '../utilities/generator';
@@ -79,8 +78,8 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
 
     const employeesPromises = list.map((item, index) => {
       const workVariantCheck = !!(item % 2);
-      const startTime = workVariantCheck ? TIME_VARIANTS.startOne : TIME_VARIANTS.startTwo;
-      const endTime = workVariantCheck ? TIME_VARIANTS.endOne : TIME_VARIANTS.endTwo;
+      const startTime = workVariantCheck || item === 2 ? TIME_VARIANTS.startOne : TIME_VARIANTS.startTwo;
+      const endTime = workVariantCheck || item === 2 ? TIME_VARIANTS.endOne : TIME_VARIANTS.endTwo;
 
       return db.Employees.create({
         zip: index === 1 ? DEFAULT_ZIP : (DEFAULT_ZIP + index),
@@ -120,23 +119,36 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
     const brands = [...generate(42)];
     const types = [...generate(12)];
 
-    const supportedBrandsPromises = brands.map((item) => (
+    const supportedBrandsPromises = brands.map((item) => [
       db.SupportedBrands.create({
         brandId: item,
         employeeId: employees[0].id,
         created: now,
         updated: now,
+      }),
+      db.SupportedBrands.create({
+        brandId: item,
+        employeeId: employees[1].id,
+        created: now,
+        updated: now,
       })
-    ));
+    ]);
 
-    const supportedTypesPromises = types.map((item) => (
+    const supportedTypesPromises = types.map((item) => [
       db.SupportedTypes.create({
         typeId: item,
         employeeId: employees[0].id,
         created: now,
         updated: now,
-      })
-    ));
+      }),
+      db.SupportedTypes.create({
+        typeId: item,
+        employeeId: employees[1].id,
+        created: now,
+        updated: now,
+      }),
+    ]
+    );
 
     await Promise.all([...supportedBrandsPromises, ...supportedTypesPromises])
 
