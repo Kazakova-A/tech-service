@@ -1,8 +1,9 @@
 import { Router } from 'express';
 
-import getJobs from './get-jobs.controller';
+import getSchedule from './get-employees-schedule.controller';
+import getJobs from '../../middlewares/get-jobs';
 
 const router = Router();
-router.get('/', getJobs);
+router.get('/', getJobs, getSchedule);
 
 export default router;
