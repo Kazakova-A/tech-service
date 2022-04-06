@@ -150,9 +150,18 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
     ]
     );
 
-    await Promise.all([...supportedBrandsPromises, ...supportedTypesPromises])
+    await Promise.all([...supportedBrandsPromises, ...supportedTypesPromises]);
 
     // create jobs
+    const employessIds: {[key: number]: number} = {
+      0: 1,
+      1: 1,
+      2: 2,
+      3: 1,
+      4: 1,
+      5: 2,
+    }
+
     const jobPromises = JOBS_MOCK_DATA.map((job: any, index: number) => (
       db.Jobs.create({
         invoiceNumber: job.invoiceNumber,
@@ -168,7 +177,7 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
         arrivalWindow: job.arrivalWindow,
         totalAmount: job.totalAmount,
         outstandingBalance: job.outstandingBalance,
-        employeeId: index > 1 ?  employees[1].id : employees[0].id,
+        employeeId: employessIds[index] as number,
         created: now,
         updated: now,
       })

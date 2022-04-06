@@ -1,84 +1,74 @@
 import { Request, Response } from 'express';
 import * as moment from 'moment';
 
-import { JobsRequest } from 'middlewares/get-jobs';
-import { RESPONSE_STATUSES as rs, SERVER_MESSAGES as sm } from '../../config';
+import {
+    RESPONSE_STATUSES as rs,
+    SERVER_MESSAGES as sm,
+} from '../../config';
 import response from '../../utilities/responses';
-import db, { EmployeesData } from '../../db';
+import getFirstDays from '../../utilities/get-first-three-days';
+import getWorkingHours from '../../utilities/get-working-hours';
+import getEmployeeStatus from '../../utilities/get-employee-status';
+import { EmployeesData } from '../../db';
+import { JobsRequest } from 'middlewares/get-employess-by-filters';
 
 export default async (req: JobsRequest, res: Response): Promise<Response> => {
     try {
-        const {
-            query: {
-                employee_ids,
-            }, jobs } = req;
+        const { jobs, employees } = req;
+        
+        const start = moment(new Date()).startOf('day').valueOf() / 1000
+        const nextThreeDays = getFirstDays(start);
 
-        const promises = employee_ids.map((id: number) => db.Employees.findOne({ where: { id } }));
-
-        const employees = await Promise.all(promises);
-
-        const workTime = jobs.reduce((accum, item) => {
-            const scheduledStart = new Date(Number(item.scheduledStart * 1000))
-            const scheduledStartHour = moment(scheduledStart).hour();
-
-            if (accum[item.employeeId]) {
-                accum[item.employeeId] = [...accum[item.employeeId], scheduledStartHour]
-            } else {
-                accum[item.employeeId] = [scheduledStartHour]
-            }
-
-            return accum;
-        }, {});
-
-        const handleEmployeeWorkTime = (
-            employee: EmployeesData,
-            workTime: { [key: string]: number[] },
-            time: number
-        ) => {
-            if (time < employee.startTime || time > employee.endTime) {
-                return 'not working'
-            }
-
-            if (workTime[employee.id].includes(time)) {
-                return 'unavailable'
-            }
-
-            return 'available'
+        const workHours = {
+            [nextThreeDays.firstDay]: getWorkingHours(jobs[nextThreeDays.firstDay]),
+            [nextThreeDays.secondDay]: getWorkingHours(jobs[nextThreeDays.secondDay]),
+            [nextThreeDays.thirdDay]: getWorkingHours(jobs[nextThreeDays.thirdDay]),
         };
 
-        const employeesSchedule = employees.reduce((
-            accum,
-            employee,
-        ) => {
-            const schedule = {
+        const generateDaySchedule = (employee: EmployeesData, workStatus: { [key: string]: number[] }) => (
+            {
                 employeeId: employee.id,
                 workTime: [
                     {
                         start: 8,
                         end: 10,
-                        status: handleEmployeeWorkTime(employee, workTime, 8),
+                        status: getEmployeeStatus(employee, workStatus, 8),
                     },
                     {
                         start: 10,
                         end: 12,
-                        status: handleEmployeeWorkTime(employee, workTime, 10),
+                        status: getEmployeeStatus(employee, workStatus, 10),
                     },
                     {
                         start: 12,
                         end: 14,
-                        status: handleEmployeeWorkTime(employee, workTime, 12),
+                        status: getEmployeeStatus(employee, workStatus, 12),
                     },
                     {
                         start: 16,
                         end: 18,
-                        status: handleEmployeeWorkTime(employee, workTime, 16),
+                        status: getEmployeeStatus(employee, workStatus, 16),
                     },
                 ]
             }
+        );
 
-            accum.push(schedule);
+        const employeesSchedule = employees.reduce((
+            accum,
+            employee,
+        ) => {
+            accum[nextThreeDays.firstDay] = [...accum[nextThreeDays.firstDay], generateDaySchedule(employee, workHours[nextThreeDays.firstDay])];
+            accum[nextThreeDays.secondDay] = [...accum[nextThreeDays.secondDay], generateDaySchedule(employee, workHours[nextThreeDays.secondDay])];
+            accum[nextThreeDays.thirdDay] = [...accum[nextThreeDays.thirdDay], generateDaySchedule(employee, workHours[nextThreeDays.thirdDay])];
+
             return accum;
-        }, []);
+        }, {
+            [nextThreeDays.firstDay]: [],
+            [nextThreeDays.secondDay]: [],
+            [nextThreeDays.thirdDay]: [],
+        }
+        );
+
 
         return response(req, res, rs[200], sm.ok, employeesSchedule);
     } catch (error) {
