@@ -22,6 +22,13 @@ export interface ReqQuery {
 export interface JobsRequest extends Request<any, any, any, ReqQuery> {
   jobs: any;
   employees: EmployeesInterface[],
+  nextThreeDays: {
+    start: number;
+    firstDay: number;
+    secondDay: number;
+    thirdDay: number;
+    end: number;
+  }
 }
 
 
