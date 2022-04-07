@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import * as moment from 'moment';
 import {
     RESPONSE_STATUSES as rs,
     SERVER_MESSAGES as sm,
@@ -15,8 +14,7 @@ export default async (req: JobsRequest, res: Response, next: any): Promise<Respo
             employees,
         } = req;
 
-        const start = moment(new Date()).startOf('day').valueOf() / 1000;
-        const nextThreeDays = getFirstDays(start);
+        const nextThreeDays = getFirstDays();
 
         const ids = employees.map(({ id }) => id).join(',');
 
@@ -43,7 +41,7 @@ export default async (req: JobsRequest, res: Response, next: any): Promise<Respo
             `
         )
 
-        const firstDayJobsQuery = generateQuery(nextThreeDays.firstDay, nextThreeDays.secondDay);
+        const firstDayJobsQuery = generateQuery(nextThreeDays.firstDay, nextThreeDays.secondDay); // start - the start of the current day, end - the next day
         const [firstDayJobs = []] = await db.connection.query(firstDayJobsQuery);
 
         const secondDayJobsQuery = generateQuery(nextThreeDays.secondDay, nextThreeDays.thirdDay);
@@ -59,6 +57,7 @@ export default async (req: JobsRequest, res: Response, next: any): Promise<Respo
         }
 
         req.jobs = jobs;
+        req.nextThreeDays = nextThreeDays;
 
         return next();
     } catch (error) {
