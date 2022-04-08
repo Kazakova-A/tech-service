@@ -5,7 +5,6 @@ dotenv.config();
 const { env = {} } = process;
 
 // Application environemnts
-
 export const ENVS = {
   development: 'development',
   staging: 'staging',
@@ -13,13 +12,12 @@ export const ENVS = {
 };
 
 // Node environment
-
 export const { NODE_ENV = ENVS.production } = env;
 
-
+// Default timezone
+export const TIMEZONE = env.TIMEZONE || 'Europe/Moscow';
 
 // Application port
-
 export const PORT = Number(env.PORT) || 3001;
 
 // Database connection options
@@ -37,31 +35,18 @@ export const DATABASE = {
 };
 
 // Server response statuses
-
 export const RESPONSE_STATUSES = {
-
   200: 200,
-
   204: 204,
-
   400: 400,
-
   401: 401,
-
   403: 403,
-
   404: 404,
-
   429: 429,
-
   500: 500,
-
 };
 
-
-
 // Server response messages
-
 export const SERVER_MESSAGES = {
 
   accessDenied: 'Access denied',
