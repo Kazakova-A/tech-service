@@ -4,6 +4,7 @@ import {
   DEFAULT_ZIP,
   JOBS_MOCK_DATA,
 } from './constants';
+import { TIMEZONE } from '../config';
 import log from '../utilities/log';
 import getSeconds from '../utilities/get-seconds';
 import generate from '../utilities/generator';
@@ -88,6 +89,7 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
         email: `dummy${index}@example.com`,
         startTime,
         endTime,
+        timezone: TIMEZONE,
         created: now,
         updated: now,
       })

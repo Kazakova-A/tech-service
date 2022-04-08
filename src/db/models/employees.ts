@@ -7,6 +7,7 @@ export interface EmployeesData extends Generic {
   email: string;
   startTime: number;
   endTime: number;
+  timezone: string;
 };
 
 export default (
@@ -32,6 +33,9 @@ export default (
     },
     endTime: {
       type: DataTypes.INTEGER,
+    },
+    timezone: {
+      type: DataTypes.STRING,
     },
     isDeleted: {
       defaultValue: false,

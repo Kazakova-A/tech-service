@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 
 import { JobStatuses } from './types';
 
@@ -65,8 +65,6 @@ export const TYPES = [
 
 export const DEFAULT_ZIP = 94022;
 const now = new Date();
-const firstJobStart = moment(now).startOf('day').add(8, 'hours')
-const firstJobEnd = moment(now).startOf('day').add(10, 'hours')  // today
 
 export const JOBS_MOCK_DATA: any[] = [
     {
@@ -77,8 +75,8 @@ export const JOBS_MOCK_DATA: any[] = [
         onMyWayAt: null,
         startedAt: null,
         completedAt: null,
-        scheduledStart: (moment(now).startOf('day').add(8, 'hours').valueOf() / 1000), // 30.04. 8:00
-        scheduledEnd: (moment(now).startOf('day').add(10, 'hours').valueOf() / 1000), // 30.04. 10:00
+        scheduledStart: (moment.utc(now).startOf('day').add(5, 'hours').valueOf() / 1000), // today 5:00 in utc
+        scheduledEnd: (moment.utc(now).startOf('day').add(7, 'hours').valueOf() / 1000), // today 7:00 in utc
         arrivalWindow: 120,
         totalAmount: 7500,
         outstandingBalance: 7500,
@@ -92,8 +90,8 @@ export const JOBS_MOCK_DATA: any[] = [
         onMyWayAt: null,
         startedAt: null,
         completedAt: null,
-        scheduledStart: (moment(now).startOf('day').add(10, 'hours').valueOf() / 1000), // 30.04. 10:00
-        scheduledEnd: (moment(now).startOf('day').add(12, 'hours').valueOf() / 1000), // 30.04. 12:00
+        scheduledStart: (moment.utc(now).startOf('day').add(7, 'hours').valueOf() / 1000),
+        scheduledEnd: (moment.utc(now).startOf('day').add(9, 'hours').valueOf() / 1000),
         arrivalWindow: 120,
         totalAmount: 7500,
         outstandingBalance: 7500,
@@ -108,8 +106,8 @@ export const JOBS_MOCK_DATA: any[] = [
         onMyWayAt: null,
         startedAt: null,
         completedAt: null,
-        scheduledStart: (moment(now).startOf('day').add(12, 'hours').valueOf() / 1000), // 30.04. 12:00
-        scheduledEnd: (moment(now).startOf('day').add(14, 'hours').valueOf() / 1000),  // 30.04. 14:00
+        scheduledStart: (moment.utc(now).startOf('day').add(7, 'hours').valueOf() / 1000),
+        scheduledEnd: (moment.utc(now).startOf('day').add(9, 'hours').valueOf() / 1000),
         arrivalWindow: 120,
         totalAmount: 7500,
         outstandingBalance: 7500,
@@ -123,8 +121,8 @@ export const JOBS_MOCK_DATA: any[] = [
         onMyWayAt: null,
         startedAt: null,
         completedAt: null,
-        scheduledStart: (moment(now).startOf('day').add(1, 'day').add(8, 'hours').valueOf() / 1000), // 1.05 8:00
-        scheduledEnd: (moment(now).startOf('day').add(1, 'day').add(10, 'hours').valueOf() / 1000), // 1.05 10:00
+        scheduledStart: (moment.utc(now).startOf('day').add(1, 'day').add(5, 'hours').valueOf() / 1000),
+        scheduledEnd: (moment.utc(now).startOf('day').add(1, 'day').add(7, 'hours').valueOf() / 1000),
         arrivalWindow: 120,
         totalAmount: 7500,
         outstandingBalance: 7500,
@@ -138,8 +136,8 @@ export const JOBS_MOCK_DATA: any[] = [
         onMyWayAt: null,
         startedAt: null,
         completedAt: null,
-        scheduledStart: (moment(now).startOf('day').add(1, 'day').add(10, 'hours').valueOf() / 1000), // 1.05 10:00
-        scheduledEnd: (moment(now).startOf('day').add(1, 'day').add(12, 'hours').valueOf() / 1000), // 1.05 12:00
+        scheduledStart: (moment.utc(now).startOf('day').add(1, 'day').add(7, 'hours').valueOf() / 1000),
+        scheduledEnd: (moment.utc(now).startOf('day').add(1, 'day').add(9, 'hours').valueOf() / 1000),
         arrivalWindow: 120,
         totalAmount: 7500,
         outstandingBalance: 7500,
@@ -154,8 +152,8 @@ export const JOBS_MOCK_DATA: any[] = [
         onMyWayAt: null,
         startedAt: null,
         completedAt: null,
-        scheduledStart: (moment(now).startOf('day').add(1, 'day').add(12, 'hours').valueOf() / 1000), // 1.05 12:00
-        scheduledEnd: (moment(now).startOf('day').add(1, 'day').add(14, 'hours').valueOf() / 1000),  // 1.05 14:00
+        scheduledStart: (moment.utc(now).startOf('day').add(1, 'day').add(9, 'hours').valueOf() / 1000),
+        scheduledEnd: (moment.utc(now).startOf('day').add(1, 'day').add(11, 'hours').valueOf() / 1000),
         arrivalWindow: 120,
         totalAmount: 7500,
         outstandingBalance: 7500,
