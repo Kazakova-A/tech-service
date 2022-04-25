@@ -7,7 +7,7 @@ export interface JobsData extends Generic {
   employeeId: number;
   diagnosticSpentTime: number | null;
   brand: string;
-  tecTypes: string;
+  technicTypes: string;
 
 };
 
@@ -49,7 +49,7 @@ export default (
     brand: {
       type: DataTypes.STRING,
     },
-    tecTypes: {
+    technicTypes: {
       type: DataTypes.STRING,
     },
     isDeleted: {
