@@ -68,16 +68,6 @@ npm run dev
 
 You don't need to run additional scripts, synchronization is done automatically
 
-### Sync
-
-Syncs the database if launching for the first time:
-
-```shell script
-npm run sync
-```
-
-This script does not launch the server, and is done automatically when launching the server
-
 ### Drop (development)
 
 Drops all data from the database (**DEVELOPMENT ONLY**):
