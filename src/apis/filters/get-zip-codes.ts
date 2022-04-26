@@ -12,8 +12,8 @@ export default async (req: Request, res: Response): Promise<Response> => {
   try {
     const {
         query: { value },
-      } = req; 
-    
+      } = req;
+
       const searchStart = Number(value) * 100;
       const list = [...generate(100)];
 

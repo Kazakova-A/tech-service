@@ -44,10 +44,10 @@ export default async (req: JobsRequest, res: Response, next: any): Promise<Respo
 
     const query = `
         SELECT e."id", e."email", e."firstName", e."zip", e."startTime", e."endTime", e."timezone", b."label" as "brand", t."label" as "type"
-          FROM "Employees" e  
+          FROM "Employees" e
           LEFT JOIN "SupportedTypes" st ON e."id" = st."employeeId"
           LEFT JOIN "SupportedBrands" sb ON e."id" = sb."employeeId"
-          LEFT JOIN "Brands" b ON b."id" = sb."brandId" 
+          LEFT JOIN "Brands" b ON b."id" = sb."brandId"
           LEFT JOIN "Types" t ON t."id" = st."typeId"
         WHERE e."zip" = '${zip}'
         AND b."value" = '${brand}'

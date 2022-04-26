@@ -20,17 +20,17 @@ export default async (req: JobsRequest, res: Response, next: any): Promise<Respo
 
         const generateQuery = (start: number, end: number) => (
             `
-                SELECT * FROM "Jobs"  
+                SELECT * FROM "Jobs"
                 WHERE "employeeId" IN(${ids})
-               
+
                 AND (
-                    "scheduledStart" = ${start}  
+                    "scheduledStart" = ${start}
                     OR
                     "scheduledStart" > ${start}
                 )
 
                 AND (
-                    "scheduledEnd" = ${end}  
+                    "scheduledEnd" = ${end}
                     OR
                     "scheduledEnd" < ${end}
                 )

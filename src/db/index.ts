@@ -62,6 +62,53 @@ db.Jobs = Jobs(connection, DataTypes);
 db.SupportedBrands = SupportedBrands(connection, DataTypes);
 db.SupportedTypes = SupportedTypes(connection, DataTypes);
 
+db.Employees.hasMany(Addresses, {
+  as: 'addresess',
+  foreignKey: 'adresId',
+  sourceKey: 'adresId',
+  constraints: false,
+  scope: {
+    adressType: 'adres'
+  }
+});
+db.Addresses.belongsTo(Employees, {
+  foreignKey: 'adresId',
+  targetKey: 'adresId',
+  constraints: false
+});
+
+db.Customers.hasMany(Addresses, {
+  as: 'addresess',
+  foreignKey: 'adresId',
+  sourceKey: 'adresId',
+  constraints: false,
+  scope: {
+    adressType: 'adres'
+  }
+});
+db.Addresses.belongsTo(Customers, {
+  foreignKey: 'adresId',
+  targetKey: 'adresId',
+  constraints: false
+});
+
+db.Jobs.hasMany(Addresses, {
+  as: 'addresess',
+  foreignKey: 'adresId',
+  sourceKey: 'adresId',
+  constraints: false,
+  scope: {
+    adressType: 'adres'
+  }
+});
+db.Addresses.belongsTo(Jobs, {
+  foreignKey: 'adresId',
+  targetKey: 'adresId',
+  constraints: false
+});
+
+
+
 // create associations
 Object.keys(db).forEach(
   (modelName: string): void => db[modelName].associate && db[modelName].associate(db),

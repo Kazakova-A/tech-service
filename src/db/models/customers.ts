@@ -17,7 +17,7 @@ export default (
   DataTypes: any,
 ) => database.define(
   'Customers',
-  { 
+  {
     firstName: {
       type: DataTypes.STRING,
     },
