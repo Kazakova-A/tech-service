@@ -8,7 +8,6 @@ export interface JobsData extends Generic {
   diagnosticSpentTime: number | null;
   brand: string;
   technicTypes: string;
-
 };
 
 export default (
