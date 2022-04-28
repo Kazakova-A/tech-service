@@ -3,6 +3,7 @@ import {
   TYPES,
   DEFAULT_ZIP,
   JOBS_MOCK_DATA,
+  ADDRESESSDATA,
 } from './constants';
 import { TIMEZONE } from '../config';
 import log from '../utilities/log';
@@ -31,6 +32,17 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
     // do the seeding
     const list = [...generate(15)];
 
+    const addresessCreatorPromises = ADDRESESSDATA.map(addres => db.Addresess.create({
+      street: addres.street,
+      houseNumber: addres.houseNumber,
+      city: addres.city,
+      state: addres.state,
+      adressId: addres.adressId,
+      adressType: addres.adressType,
+      created: now,
+      updated: now,
+    }));
+
     // create customers and their addresses
     const customersPromises = list.map((item, index) => (
       db.Customers.create({
@@ -44,9 +56,8 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
 
     const [firstCustomer, secondCustomer] = await Promise.all(customersPromises);
 
-    await Promise.all([
+    const createdAddresse = await Promise.all([
       db.Addresess.create({
-        customerId: firstCustomer.id,
         type: `billing`,
         street: `Almond Ave`,
         city: 'Los Altos',
@@ -57,7 +68,6 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
         updated: now,
       }),
       db.Addresess.create({
-        customerId: secondCustomer.id,
         type: `billing`,
         street: `Clinton Rd`,
         city: 'Los Altos',
@@ -155,7 +165,7 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
     await Promise.all([...supportedBrandsPromises, ...supportedTypesPromises]);
 
     // create jobs
-    const employessIds: {[key: number]: number} = {
+    const employessIds: { [key: number]: number } = {
       0: 1,
       1: 1,
       2: 2,

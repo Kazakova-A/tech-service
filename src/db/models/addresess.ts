@@ -1,4 +1,3 @@
-import { Json } from 'sequelize/types/utils';
 import { Generic, JobStatuses } from '../types';
 
 export interface AddresessData extends Generic {
@@ -48,5 +47,5 @@ export default (
   {
     tableName: 'Addresess',
     timestamps: true,
-  },
-);
+  }
+  );
