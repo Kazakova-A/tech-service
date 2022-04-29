@@ -18,6 +18,7 @@ export default async (req: JobsRequest, res: Response, next: any): Promise<Respo
 
         const ids = employees.map(({ id }) => id).join(',');
 
+
         const generateQuery = (start: number, end: number) => (
             `
                 SELECT * FROM "Jobs"  
@@ -43,13 +44,11 @@ export default async (req: JobsRequest, res: Response, next: any): Promise<Respo
 
         const firstDayJobsQuery = generateQuery(nextThreeDays.firstDay, nextThreeDays.secondDay); // start - the start of the current day, end - the next day
         const [firstDayJobs = []] = await db.connection.query(firstDayJobsQuery);
-
         const secondDayJobsQuery = generateQuery(nextThreeDays.secondDay, nextThreeDays.thirdDay);
         const [secondDayJobs = []] = await db.connection.query(secondDayJobsQuery);
 
         const thirdDayJobsQuery = generateQuery(nextThreeDays.thirdDay, nextThreeDays.end);
         const [thirdDayJobs = []] = await db.connection.query(thirdDayJobsQuery);
-
         const jobs = {
             [nextThreeDays.firstDay]: firstDayJobs,
             [nextThreeDays.secondDay]: secondDayJobs,

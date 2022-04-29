@@ -2,11 +2,14 @@ import { Generic, JobStatuses } from '../types';
 
 export interface JobsData extends Generic {
   customerId: number;
+  workStatus: JobStatuses;
   startedAt: number | null;
   completedAt: number | null;
   employeeId: number;
   diagnosticSpentTime: number | null;
   brand: string;
+  scheduledStart: number | null;
+  scheduledEnd: number | null;
   technicTypes: string;
 };
 
@@ -26,10 +29,19 @@ export default (
       },
       type: DataTypes.INTEGER,
     },
+    workStatus: {
+      type: DataTypes.STRING,
+    },
     startedAt: {
       type: DataTypes.BIGINT,
     },
     completedAt: {
+      type: DataTypes.BIGINT,
+    },
+    scheduledStart: {
+      type: DataTypes.BIGINT,
+    },
+    scheduledEnd: {
       type: DataTypes.BIGINT,
     },
     diagnosticSpentTime: {

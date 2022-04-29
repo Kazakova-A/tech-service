@@ -167,9 +167,13 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
     const jobPromises = JOBS_MOCK_DATA.map((job: any, index: number) => (
       db.Jobs.create({
         customerId: index === 1 ? firstCustomer.id : secondCustomer.id,
+        workStatus: job.workStatus,
         startedAt: job.startedAt,
         completedAt: job.completedAt,
+        diagnosticSpentTime: job.diagnosticSpentTime,
         brand: job.brand,
+        scheduledStart: job.scheduledStart,
+        scheduledEnd: job.scheduledEnd,
         technicTypes: job.technicTypes,
         employeeId: employessIds[index] as number,
         created: now,

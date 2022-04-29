@@ -66,60 +66,80 @@ export const TYPES = [
 export const DEFAULT_ZIP = 94022;
 const now = new Date();
 
-const diagnosticSpentTime = () => Math.floor(Math.random() * 40) + 40;
+const spentTime = () => Math.floor(Math.random() * 40) + 40;
+
+console.log(spentTime());
 
 export const JOBS_MOCK_DATA: any[] = [
     {
         customerId: 2,
+        workStatus: JobStatuses.scheduled,
         startedAt: null,
         completedAt: null,
         brand: BRANDS[1],
-        diagnosticSpentTime,
+        scheduledStart: (moment.utc(now).startOf('day').add(5, 'hours').valueOf() / 1000), // today 5:00 in utc
+        scheduledEnd: (moment.utc(now).startOf('day').add(7, 'hours').valueOf() / 1000), // today 7:00 in utc
+        diagnosticSpentTime: spentTime(),
         technicTypes: TYPES[1],
         employeeId: 1,
     },
     {
         customerId: 1,
+        workStatus: JobStatuses.scheduled,
         startedAt: null,
         completedAt: null,
         brand: BRANDS[3],
-        diagnosticSpentTime,
+        scheduledStart: (moment.utc(now).startOf('day').add(5, 'hours').valueOf() / 1000), // today 5:00 in utc
+        scheduledEnd: (moment.utc(now).startOf('day').add(7, 'hours').valueOf() / 1000), // today 7:00 in utc
+        diagnosticSpentTime: spentTime(),
         technicTypes: TYPES[2],
         employeeId: 2,
     },
     {
         customerId: 3,
+        workStatus: JobStatuses.scheduled,
         startedAt: null,
         completedAt: null,
         brand: BRANDS[2],
-        diagnosticSpentTime,
+        scheduledStart: (moment.utc(now).startOf('day').add(5, 'hours').valueOf() / 1000), // today 5:00 in utc
+        scheduledEnd: (moment.utc(now).startOf('day').add(7, 'hours').valueOf() / 1000), // today 7:00 in utc
+        diagnosticSpentTime: spentTime(),
         technicTypes: TYPES[3],
         employeeId: 3,
     },
     {
         customerId: 4,
+        workStatus: JobStatuses.scheduled,
         startedAt: null,
         completedAt: null,
         brand: BRANDS[5],
-        diagnosticSpentTime,
+        scheduledStart: (moment.utc(now).startOf('day').add(5, 'hours').valueOf() / 1000), // today 5:00 in utc
+        scheduledEnd: (moment.utc(now).startOf('day').add(7, 'hours').valueOf() / 1000), // today 7:00 in utc
+        diagnosticSpentTime: spentTime(),
         technicTypes: TYPES[4],
         employeeId: 4,
     },
     {
         customerId: 5,
+        workStatus: JobStatuses.scheduled,
         startedAt: null,
         completedAt: null,
         brand: BRANDS[6],
-        diagnosticSpentTime,
+        scheduledStart: (moment.utc(now).startOf('day').add(5, 'hours').valueOf() / 1000), // today 5:00 in utc
+        scheduledEnd: (moment.utc(now).startOf('day').add(7, 'hours').valueOf() / 1000), // today 7:00 in utc
+        diagnosticSpentTime: spentTime(),
         technicTypes: TYPES[5],
         employeeId: 6,
     },
     {
         customerId: 6,
+        workStatus: JobStatuses.scheduled,
         startedAt: null,
         completedAt: null,
         brand: BRANDS[7],
-        diagnosticSpentTime,
+        scheduledStart: (moment.utc(now).startOf('day').add(5, 'hours').valueOf() / 1000), // today 5:00 in utc
+        scheduledEnd: (moment.utc(now).startOf('day').add(7, 'hours').valueOf() / 1000), // today 7:00 in utc
+        diagnosticSpentTime: spentTime(),
         technicTypes: TYPES[6],
         employeeId: 5,
     },
