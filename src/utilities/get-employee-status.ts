@@ -27,11 +27,11 @@ const getEmployeeStatus = (
         ) {
         return 'not working';
     }
-    
+
     if (existedJobsTime[employee.id]?.includes(workingHour)) {
         return 'unavailable';
     }
-    
+
     if ( diff > MAX_DIFFERENCE_IN_SEC) {
         return 'expired';
     }

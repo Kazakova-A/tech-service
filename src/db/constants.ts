@@ -66,9 +66,42 @@ export const TYPES = [
 export const DEFAULT_ZIP = 94022;
 const now = new Date();
 
-const spentTime = () => Math.floor(Math.random() * 40) + 40;
+export const ADDRESESSDATA: any[] = [
+        {
+            street: 'Clinton Rd',
+            houseNumber: 23,
+            city: 'Los Altos',
+            state: 'CA',
+            adressId: 1,
+            adressType: 'customers adres',
+        },
+        {
+            street: '35th street',
+            houseNumber: 41,
+            city: 'Los Altos',
+            state: 'CA',
+            adressId: 2,
+            adressType: 'customers adres',
+        },
+        {
+            street: 'Monky Rd',
+            houseNumber: 12,
+            city: 'Los Altos',
+            state: 'CA',
+            adressId: 3,
+            adressType: 'customers adres',
+        },
+        {
+            street: 'Siply Rd',
+            houseNumber: 67,
+            city: 'Los Altos',
+            state: 'CA',
+            adressId: 4,
+            adressType: 'customers adres',
+        },
+    ]
 
-console.log(spentTime());
+const spentTime = () => Math.floor(Math.random() * 40) + 40;
 
 export const JOBS_MOCK_DATA: any[] = [
     {
@@ -144,99 +177,3 @@ export const JOBS_MOCK_DATA: any[] = [
         employeeId: 5,
     },
 ]
-
-
-// export const JOBS_MOCK_DATA: any[] = [
-//     {
-//         invoiceNumber: '3882',
-//         description: 'Online Booking - Diagnistic',
-//         note: null,
-//         workStatus: JobStatuses.scheduled,
-//         onMyWayAt: null,
-//         startedAt: null,
-//         completedAt: null,
-//         scheduledStart: 1651294800, // 30.04. 8:00
-//         scheduledEnd: 1651302000, // 30.04. 10:00
-//         arrivalWindow: 120,
-//         totalAmount: 7500,
-//         outstandingBalance: 7500,
-//         // employeeId: 1,
-//     },
-//     {
-//         invoiceNumber: '3882',
-//         description: 'Online Booking - Diagnistic',
-//         note: null,
-//         workStatus: JobStatuses.scheduled,
-//         onMyWayAt: null,
-//         startedAt: null,
-//         completedAt: null,
-//         scheduledStart: 1651302000, // 30.04. 10:00
-//         scheduledEnd: 1651309200, // 30.04. 12:00
-//         arrivalWindow: 120,
-//         totalAmount: 7500,
-//         outstandingBalance: 7500,
-//         // employeeId: 1,
-//     },
-//     {
-//         invoiceNumber: '3882',
-//         description: 'Online Booking - Diagnistic',
-//         customerId: 2,
-//         note: null,
-//         workStatus: JobStatuses.scheduled,
-//         onMyWayAt: null,
-//         startedAt: null,
-//         completedAt: null,
-//         scheduledStart: 1651309200, // 30.04. 12:00
-//         scheduledEnd: 1651316400,  // 30.04. 14:00
-//         arrivalWindow: 120,
-//         totalAmount: 7500,
-//         outstandingBalance: 7500,
-//         employeeId: 2,
-//     },
-//     {
-//         invoiceNumber: '3882',
-//         description: 'Online Booking - Diagnistic',
-//         note: null,
-//         workStatus: JobStatuses.scheduled,
-//         onMyWayAt: null,
-//         startedAt: null,
-//         completedAt: null,
-//         scheduledStart: 1651381200, // 1.05 8:00
-//         scheduledEnd: 1651388400, // 1.05 10:00
-//         arrivalWindow: 120,
-//         totalAmount: 7500,
-//         outstandingBalance: 7500,
-//         // employeeId: 1,
-//     },
-//     {
-//         invoiceNumber: '3882',
-//         description: 'Online Booking - Diagnistic',
-//         note: null,
-//         workStatus: JobStatuses.scheduled,
-//         onMyWayAt: null,
-//         startedAt: null,
-//         completedAt: null,
-//         scheduledStart: 1651388400, // 1.05 10:00
-//         scheduledEnd: 1651395600, // 1.05 12:00
-//         arrivalWindow: 120,
-//         totalAmount: 7500,
-//         outstandingBalance: 7500,
-//         // employeeId: 1,
-//     },
-//     {
-//         invoiceNumber: '3882',
-//         description: 'Online Booking - Diagnistic',
-//         customerId: 2,
-//         note: null,
-//         workStatus: JobStatuses.scheduled,
-//         onMyWayAt: null,
-//         startedAt: null,
-//         completedAt: null,
-//         scheduledStart: 1651395600, // 1.05 12:00
-//         scheduledEnd: 1651402800,  // 1.05 14:00
-//         arrivalWindow: 120,
-//         totalAmount: 7500,
-//         outstandingBalance: 7500,
-//         employeeId: 2,
-//     },
-// ]
