@@ -1,20 +1,16 @@
 import { Generic, JobStatuses } from '../types';
 
 export interface JobsData extends Generic {
-  invoiceNumber: string;
-  description: string;
   customerId: number;
-  note: string | null;
   workStatus: JobStatuses;
-  onMyWayAt: number | null;
   startedAt: number | null;
   completedAt: number | null;
+  employeeId: number;
+  diagnosticSpentTime: number | null;
+  brand: string;
   scheduledStart: number | null;
   scheduledEnd: number | null;
-  arrivalWindow: number;
-  totalAmount: number;
-  outstandingBalance: number;
-  employeeId: number;
+  technicTypes: string;
 };
 
 export default (
@@ -23,12 +19,6 @@ export default (
 ) => database.define(
   'Jobs',
   {
-    invoiceNumber: {
-      type: DataTypes.STRING,
-    },
-    description: {
-      type: DataTypes.STRING,
-    },
     customerId: {
       allowNull: false,
       onDelete: 'CASCADE',
@@ -39,14 +29,8 @@ export default (
       },
       type: DataTypes.INTEGER,
     },
-    note: {
-      type: DataTypes.STRING,
-    },
     workStatus: {
       type: DataTypes.STRING,
-    },
-    onMyWayAt: {
-      type: DataTypes.BIGINT,
     },
     startedAt: {
       type: DataTypes.BIGINT,
@@ -60,14 +44,8 @@ export default (
     scheduledEnd: {
       type: DataTypes.BIGINT,
     },
-    arrivalWindow: {
-      type: DataTypes.INTEGER,
-    },
-    totalAmount: {
-      type: DataTypes.INTEGER,
-    },
-    outstandingBalance: {
-      type: DataTypes.INTEGER,
+    diagnosticSpentTime: {
+      type: DataTypes.BIGINT,
     },
     employeeId: {
       allowNull: false,
@@ -78,6 +56,12 @@ export default (
         model: 'Employees',
       },
       type: DataTypes.INTEGER,
+    },
+    brand: {
+      type: DataTypes.STRING,
+    },
+    technicTypes: {
+      type: DataTypes.STRING,
     },
     isDeleted: {
       defaultValue: false,
