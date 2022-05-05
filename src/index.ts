@@ -15,7 +15,7 @@ app.use(cors());
 // routing
 app.use('/filters', filters);
 app.use('/jobs', jobs);
-app.use('/jobsForEmployees', jobsForEmployees);
+app.use('/jobsForEmployees', jobsForEmployees);//created 20 complited jobs for 3 employees
 
 // start the Express server
 app.listen(PORT, () => {

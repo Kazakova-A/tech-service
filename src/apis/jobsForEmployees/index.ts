@@ -3,6 +3,6 @@ import getJobsForEmployees from '../../middlewares/get-jobs-for-employees';
 
 const router = Router();
 
-router.get('/test', getJobsForEmployees);
+router.get('/', getJobsForEmployees);
 
 export default router;
