@@ -7,6 +7,8 @@ import { PORT } from './config';
 import filters from './apis/filters';
 import jobs from './apis/jobs';
 import jobsForEmployees from './apis/jobsForEmployees';
+import employeesAdres from './apis/employeesAdres';
+
 
 const app = express();
 app.use(bodyParser.json());
@@ -16,6 +18,7 @@ app.use(cors());
 app.use('/filters', filters);
 app.use('/jobs', jobs);
 app.use('/jobsForEmployees', jobsForEmployees);//created 20 complited jobs for 3 employees
+app.use('/employeesAdres', employeesAdres);
 
 // start the Express server
 app.listen(PORT, () => {

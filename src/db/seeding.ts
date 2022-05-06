@@ -37,8 +37,8 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
       houseNumber: addres.houseNumber,
       city: addres.city,
       state: addres.state,
-      adressId: addres.adressId,
-      adressType: addres.adressType,
+      parentId: addres.parentId,
+      parentType: addres.parentType,
       created: now,
       updated: now,
     }));
