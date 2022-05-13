@@ -1,5 +1,5 @@
 import { Router } from "express";
-import getJobsForEmployees from '../../middlewares/get-jobs-for-employees';
+import getJobsForEmployees from './get-jobs-for-employees.controller';
 
 const router = Router();
 
