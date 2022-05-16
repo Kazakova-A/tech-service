@@ -97,6 +97,14 @@ export const ADDRESESSDATA: any[] = [
             parentId: 4,
             parentType: 'customer',
         },
+        {
+            street: 'Siply Rd',
+            houseNumber: 63,
+            city: 'Los Altos',
+            state: 'CA',
+            parentId: 16,
+            parentType: 'employee',
+        },
     ]
 
 const spentTime = () => Math.floor(Math.random() * 40) + 40;
