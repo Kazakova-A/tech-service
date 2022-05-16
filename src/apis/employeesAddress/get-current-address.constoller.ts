@@ -48,8 +48,6 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
             }
         })
 
-        const result = "test";
-
         return response(req, res, rs[200], sm.ok, currentAddress);
     } catch (error) {
         return response(req, res, rs[500], sm.internalServerError, error);
