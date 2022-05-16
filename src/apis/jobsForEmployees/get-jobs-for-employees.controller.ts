@@ -48,9 +48,13 @@ export default async (req: Request, res: Response): Promise<Response> => {
 
     const employeeJobs = employees.map((employeesItem: any, index: number) => {
       let day = 1;
-      const scheduled = (timeToWork:number) => new Date(new Date(
-          currentDay.setDate(currentDay.getDate()-day)).setHours(workTime[index % 4]+timeToWork)
-      );
+      const scheduled = (timeToWork:number, indexJob:number) => {
+        const tempDate = new Date();
+
+        return new Date(new Date(
+          tempDate.setDate(tempDate.getDate()-day)).setHours(workTime[indexJob % 4]+timeToWork)
+        );
+      };
 
       const jobsPromises = listJobs.map((job: any, index: number) => {
         const jobPromise = db.Jobs.create({
@@ -60,15 +64,15 @@ export default async (req: Request, res: Response): Promise<Response> => {
           completedAt: null,
           diagnosticSpentTime: spentTime(),
           brand: usedBrend(),
-          scheduledStart: scheduled(0),
-          scheduledEnd: scheduled(2),
+          scheduledStart: scheduled(0, index),
+          scheduledEnd: scheduled(2, index),
           technicTypes: usedTypes(),
           employeeId: employeesItem.id,
           created: currentDay,
           updated: currentDay,
         })
         if ((index + 1) % 4 === 0) {
-          day += 1
+          day += 1;
         };
         return jobPromise;
       })
