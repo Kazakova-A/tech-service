@@ -13,12 +13,10 @@ import { JobsRequest } from 'middlewares/get-employess-by-filters';
 export default async (req: JobsRequest, res: Response): Promise<Response> => {
     try {
 
-        const id = 16; // получить при запросе
-
         const timeLastJobForEmployees = await db.Jobs.findOne({
             where: {
                 [Op.and]: [
-                    {employeeId: id},
+                    {employeeId: req.params.id},
                     {workStatus: 
                         { [Op.or]: ['in_progress', 'completed']}
                     }
