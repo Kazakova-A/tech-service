@@ -8,6 +8,7 @@ import filters from './apis/filters';
 import jobs from './apis/jobs';
 import jobsForEmployees from './apis/jobsForEmployees';
 import employeesAddress from './apis/employeesAddress';
+import employeesDiagnosticCoefficient from './apis/employeesDiagnosticCoefficient';
 
 const app = express();
 app.use(bodyParser.json());
@@ -18,6 +19,7 @@ app.use('/filters', filters);
 app.use('/jobs', jobs);
 app.use('/jobsForEmployees', jobsForEmployees); //created 20 complited jobs for 3 employees
 app.use('/employeesAddress', employeesAddress);
+app.use('/employeesDiagnosticCoefficient', employeesDiagnosticCoefficient);
 
 // start the Express server
 app.listen(PORT, () => {
