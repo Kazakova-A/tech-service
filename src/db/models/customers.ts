@@ -51,10 +51,10 @@ export default (
       type: DataTypes.BOOLEAN,
     },
     created: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DATE,
     },
     updated: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DATE,
     },
   },
   {

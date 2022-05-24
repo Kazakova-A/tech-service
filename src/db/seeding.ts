@@ -7,12 +7,11 @@ import {
 } from './constants';
 import { TIMEZONE } from '../config';
 import log from '../utilities/log';
-import getSeconds from '../utilities/get-seconds';
 import generate from '../utilities/generator';
 
 export default async (db: any, seeding: boolean = false): Promise<Error | void> => {
   try {
-    const now = getSeconds();
+    const currentDay = new Date();
 
     if (!seeding) {
       return log('-- database: seeding is disabled');
@@ -37,10 +36,10 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
       houseNumber: addres.houseNumber,
       city: addres.city,
       state: addres.state,
-      adressId: addres.adressId,
-      adressType: addres.adressType,
-      created: now,
-      updated: now,
+      parentId: addres.parentId,
+      parentType: addres.parentType,
+      created: currentDay,
+      updated: currentDay,
     }));
 
     // create customers and their addresses
@@ -49,8 +48,8 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
         firstName: `Crisital the ${index}`,
         lastName: `Petrov`,
         email: `user${index}@example.com`,
-        created: now,
-        updated: now,
+        created: currentDay,
+        updated: currentDay,
       })
     ));
 
@@ -64,8 +63,8 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
         state: 'CA',
         zip: 94022,
         country: 'USA',
-        created: now,
-        updated: now,
+        created: currentDay,
+        updated: currentDay,
       }),
       db.Addresess.create({
         type: `billing`,
@@ -74,8 +73,8 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
         state: 'CA',
         zip: 94022,
         country: 'USA',
-        created: now,
-        updated: now,
+        created: currentDay,
+        updated: currentDay,
       })
     ]);
 
@@ -100,8 +99,8 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
         startTime,
         endTime,
         timezone: TIMEZONE,
-        created: now,
-        updated: now,
+        created: currentDay,
+        updated: currentDay,
       })
     });
 
@@ -111,8 +110,8 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
       value: brand,
       label: brand.replace(/_/g, " ")
         .replace(/(?:^|\s)\S/g, (symbol) => symbol.toUpperCase()),
-      created: now,
-      updated: now,
+      created: currentDay,
+      updated: currentDay,
     }));
 
     const typesCreatorsPromises = TYPES.map(type => {
@@ -120,8 +119,8 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
       return db.Types.create({
         value: type,
         label: typeStr.charAt(0).toUpperCase() + typeStr.slice(1),
-        created: now,
-        updated: now,
+        created: currentDay,
+        updated: currentDay,
       })
     }
     );
@@ -135,14 +134,14 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
       db.SupportedBrands.create({
         brandId: item,
         employeeId: employees[0].id,
-        created: now,
-        updated: now,
+        created: currentDay,
+        updated: currentDay,
       }),
       db.SupportedBrands.create({
         brandId: item,
         employeeId: employees[1].id,
-        created: now,
-        updated: now,
+        created: currentDay,
+        updated: currentDay,
       })
     ]);
 
@@ -150,14 +149,14 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
       db.SupportedTypes.create({
         typeId: item,
         employeeId: employees[0].id,
-        created: now,
-        updated: now,
+        created: currentDay,
+        updated: currentDay,
       }),
       db.SupportedTypes.create({
         typeId: item,
         employeeId: employees[1].id,
-        created: now,
-        updated: now,
+        created: currentDay,
+        updated: currentDay,
       }),
     ]
     );
@@ -186,8 +185,8 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
         scheduledEnd: job.scheduledEnd,
         technicTypes: job.technicTypes,
         employeeId: employessIds[index] as number,
-        created: now,
-        updated: now,
+        created: currentDay,
+        updated: currentDay,
       })
     ));
 

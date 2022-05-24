@@ -5,8 +5,8 @@ export interface AddresessData extends Generic {
   houseNumber: number;
   city: string;
   state: string;
-  adressId: number;
-  adressType: string;
+  parentId: number;
+  parentType: string;
 };
 
 export default (
@@ -27,10 +27,10 @@ export default (
     state: {
       type: DataTypes.STRING,
     },
-    adressId: {
+    parentId: {
       type: DataTypes.INTEGER,
     },
-    adressType: {
+    parentType: {
       type: DataTypes.STRING,
     },
     isDeleted: {
@@ -38,10 +38,10 @@ export default (
       type: DataTypes.BOOLEAN,
     },
     created: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DATE,
     },
     updated: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DATE,
     },
   },
   {
