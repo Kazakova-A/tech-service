@@ -67,7 +67,7 @@ const currentDay = new Date();
 export const ADDRESESSDATA: any[] = [
         {
             street: 'Clinton Rd',
-            houseNumber: 23,
+            houseNumber: '23',
             city: 'Los Altos',
             state: 'CA',
             parentId: 1,
@@ -75,7 +75,7 @@ export const ADDRESESSDATA: any[] = [
         },
         {
             street: '35th street',
-            houseNumber: 41,
+            houseNumber: '41',
             city: 'Los Altos',
             state: 'CA',
             parentId: 2,
@@ -83,7 +83,7 @@ export const ADDRESESSDATA: any[] = [
         },
         {
             street: 'Monky Rd',
-            houseNumber: 12,
+            houseNumber: '12',
             city: 'Los Altos',
             state: 'CA',
             parentId: 3,
@@ -91,7 +91,7 @@ export const ADDRESESSDATA: any[] = [
         },
         {
             street: 'Siply Rd',
-            houseNumber: 67,
+            houseNumber: '67',
             city: 'Los Altos',
             state: 'CA',
             parentId: 4,
@@ -99,7 +99,7 @@ export const ADDRESESSDATA: any[] = [
         },
         {
             street: 'Siply Rd',
-            houseNumber: 63,
+            houseNumber: '63',
             city: 'Los Altos',
             state: 'CA',
             parentId: 16,

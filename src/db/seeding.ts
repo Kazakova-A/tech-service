@@ -38,8 +38,6 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
       state: addres.state,
       parentId: addres.parentId,
       parentType: addres.parentType,
-      created: currentDay,
-      updated: currentDay,
     }));
 
     // create customers and their addresses
@@ -48,8 +46,6 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
         firstName: `Crisital the ${index}`,
         lastName: `Petrov`,
         email: `user${index}@example.com`,
-        created: currentDay,
-        updated: currentDay,
       })
     ));
 
@@ -57,24 +53,19 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
 
     const createdAddresse = await Promise.all([
       db.Addresess.create({
-        type: `billing`,
         street: `Almond Ave`,
         city: 'Los Altos',
         state: 'CA',
         zip: 94022,
         country: 'USA',
-        created: currentDay,
-        updated: currentDay,
       }),
+
       db.Addresess.create({
-        type: `billing`,
         street: `Clinton Rd`,
         city: 'Los Altos',
         state: 'CA',
         zip: 94022,
         country: 'USA',
-        created: currentDay,
-        updated: currentDay,
       })
     ]);
 

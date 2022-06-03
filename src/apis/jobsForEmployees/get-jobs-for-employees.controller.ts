@@ -36,8 +36,6 @@ export default async (req: Request, res: Response): Promise<Response> => {
         firstName: `Crisital the 1`,
         lastName: `Petrov`,
         email: `user1@example.com`,
-        created: currentDay,
-        updated: currentDay,
       })
 
     const spentTime = () => Math.floor(Math.random() * 40) + 40;
