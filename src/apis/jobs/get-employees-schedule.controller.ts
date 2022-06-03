@@ -18,7 +18,6 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
             [String(nextThreeDays.secondDay)]: getWorkingHours(jobs[String(nextThreeDays.secondDay)]),
             [String(nextThreeDays.thirdDay)]: getWorkingHours(jobs[String(nextThreeDays.thirdDay)]),
         };
-
         const generateDaySchedule = (employee: EmployeesData, workStatus: { [key: string]: number[]}, workDay: Date) => (
             {
                 employeeId: employee.id,

@@ -9,23 +9,24 @@ const getEmployeeStatus = (
     workDay: Date, // milliseconds - working day in utc
 ) => {
     const MAX_DIFFERENCE_IN_SEC = 1440; // 24 minutes
-    const currentTimeByTimezone = new Date(currentTime.toLocaleString("en-US", {timeZone: employee.timezone})); // current time, when request was sended in emploees timezone
-
+    const currentTimeByTimezone = new Date(currentTime.toLocaleString("en-US", { timeZone: employee.timezone })); // current time, when request was sended in emploees timezone
     const startWorkByEmployeerZone = new Date(
-        new Date(workDay.toLocaleString("en-US", {timeZone: employee.timezone})).setHours(workingHour)
+        new Date(workDay.toLocaleString("en-US", { timeZone: employee.timezone })).setHours(workingHour)
     );
     const employeeStartHourByDefaultZone = new Date(
-        new Date(startWorkByEmployeerZone.toLocaleString("en-US", {timeZone: TIMEZONE})).setHours(workingHour)
+        new Date(startWorkByEmployeerZone.toLocaleString("en-US", { timeZone: TIMEZONE })).setHours(workingHour)
     ).getHours(); // the hour when employee starts work by default timezone
     const endHour = workingHour + 2;
+
     const diff = (currentTimeByTimezone.getTime() - startWorkByEmployeerZone.getTime()) / 1000;
     // const diff = currentTimeByTimezone - Math.floor(startWorkByEmployeerZone.clone().tz(TIMEZONE).valueOf() / 1000);
-
+    console.log("22222222")
+    console.log(diff)
     if (
         employeeStartHourByDefaultZone < employee.startTime
         || employeeStartHourByDefaultZone > employee.endTime
-        ||( employeeStartHourByDefaultZone > workingHour && employeeStartHourByDefaultZone < endHour)
-        ) {
+        || (employeeStartHourByDefaultZone > workingHour && employeeStartHourByDefaultZone < endHour)
+    ) {
         return 'not working';
     }
 
@@ -33,7 +34,7 @@ const getEmployeeStatus = (
         return 'unavailable';
     }
 
-    if ( diff > MAX_DIFFERENCE_IN_SEC) {
+    if (diff < MAX_DIFFERENCE_IN_SEC) {
         return 'expired';
     }
     return 'available'
