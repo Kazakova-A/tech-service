@@ -13,7 +13,6 @@ import generate from '../../utilities/generator';
 
 export default async (req: Request, res: Response): Promise<Response> => {
   try {
-    const currentDay = new Date();
     const listEmployees = [...generate(3)];
 
     const employeesPromises = listEmployees.map((item, index) => {
@@ -25,8 +24,6 @@ export default async (req: Request, res: Response): Promise<Response> => {
         startTime: 8,
         endTime: 16,
         timezone: TIMEZONE,
-        created: currentDay,
-        updated: currentDay,
       })
     });
 
@@ -66,8 +63,6 @@ export default async (req: Request, res: Response): Promise<Response> => {
           scheduledEnd: scheduled(2, index),
           technicTypes: usedTypes(),
           employeeId: employeesItem.id,
-          created: currentDay,
-          updated: currentDay,
         })
         if ((index + 1) % 4 === 0) {
           day += 1;

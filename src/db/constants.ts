@@ -1,3 +1,5 @@
+import * as moment from 'moment-timezone';
+
 import { JobStatuses } from './types';
 
 export const BRANDS = [
@@ -62,7 +64,7 @@ export const TYPES = [
 ]
 
 export const DEFAULT_ZIP = 94022;
-const currentDay = new Date();
+const now = new Date();
 
 export const ADDRESESSDATA: any[] = [
         {
@@ -116,8 +118,8 @@ export const JOBS_MOCK_DATA: any[] = [
         startedAt: null,
         completedAt: null,
         brand: BRANDS[1],
-        scheduledStart: new Date(currentDay.setHours(5)), // today 5:00 in utc
-        scheduledEnd: new Date(currentDay.setHours(7)), // today 7:00 in utc
+        scheduledStart: (moment.utc(now).startOf('day').add(5, 'hours').valueOf() / 1000), // today 5:00 in utc
+        scheduledEnd: (moment.utc(now).startOf('day').add(7, 'hours').valueOf() / 1000), // today 7:00 in utc
         diagnosticSpentTime: spentTime(),
         technicTypes: TYPES[1],
         employeeId: 1,
@@ -128,8 +130,8 @@ export const JOBS_MOCK_DATA: any[] = [
         startedAt: null,
         completedAt: null,
         brand: BRANDS[3],
-        scheduledStart: new Date(currentDay.setHours(5)), // today 5:00 in utc
-        scheduledEnd: new Date(currentDay.setHours(7)), // today 7:00 in utc
+        scheduledStart: (moment.utc(now).startOf('day').add(7, 'hours').valueOf() / 1000),
+        scheduledEnd: (moment.utc(now).startOf('day').add(9, 'hours').valueOf() / 1000),
         diagnosticSpentTime: spentTime(),
         technicTypes: TYPES[2],
         employeeId: 2,
@@ -140,8 +142,8 @@ export const JOBS_MOCK_DATA: any[] = [
         startedAt: null,
         completedAt: null,
         brand: BRANDS[2],
-        scheduledStart: new Date(currentDay.setHours(5)), // today 5:00 in utc
-        scheduledEnd: new Date(currentDay.setHours(7)), // today 7:00 in utc
+        scheduledStart: (moment.utc(now).startOf('day').add(7, 'hours').valueOf() / 1000),
+        scheduledEnd: (moment.utc(now).startOf('day').add(9, 'hours').valueOf() / 1000),
         diagnosticSpentTime: spentTime(),
         technicTypes: TYPES[3],
         employeeId: 3,
@@ -152,8 +154,8 @@ export const JOBS_MOCK_DATA: any[] = [
         startedAt: null,
         completedAt: null,
         brand: BRANDS[5],
-        scheduledStart: new Date(currentDay.setHours(5)), // today 5:00 in utc
-        scheduledEnd: new Date(currentDay.setHours(7)), // today 7:00 in utc
+        scheduledStart: (moment.utc(now).startOf('day').add(1, 'day').add(5, 'hours').valueOf() / 1000),
+        scheduledEnd: (moment.utc(now).startOf('day').add(1, 'day').add(7, 'hours').valueOf() / 1000),
         diagnosticSpentTime: spentTime(),
         technicTypes: TYPES[4],
         employeeId: 4,
@@ -164,8 +166,8 @@ export const JOBS_MOCK_DATA: any[] = [
         startedAt: null,
         completedAt: null,
         brand: BRANDS[6],
-        scheduledStart: new Date(currentDay.setHours(5)), // today 5:00 in utc
-        scheduledEnd: new Date(currentDay.setHours(7)), // today 7:00 in utc
+        scheduledStart: (moment.utc(now).startOf('day').add(1, 'day').add(7, 'hours').valueOf() / 1000),
+        scheduledEnd: (moment.utc(now).startOf('day').add(1, 'day').add(9, 'hours').valueOf() / 1000),
         diagnosticSpentTime: spentTime(),
         technicTypes: TYPES[5],
         employeeId: 6,
@@ -176,8 +178,8 @@ export const JOBS_MOCK_DATA: any[] = [
         startedAt: null,
         completedAt: null,
         brand: BRANDS[7],
-        scheduledStart: new Date(currentDay.setHours(5)), // today 5:00 in utc
-        scheduledEnd: new Date(currentDay.setHours(7)), // today 7:00 in utc
+        scheduledStart: (moment.utc(now).startOf('day').add(1, 'day').add(9, 'hours').valueOf() / 1000),
+        scheduledEnd: (moment.utc(now).startOf('day').add(1, 'day').add(11, 'hours').valueOf() / 1000),
         diagnosticSpentTime: spentTime(),
         technicTypes: TYPES[6],
         employeeId: 5,

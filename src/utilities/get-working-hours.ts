@@ -1,8 +1,9 @@
+import * as moment from 'moment-timezone';
 import { TIMEZONE } from '../config';
 
 const getWorkingHours = (jobsArr: any[]) => (jobsArr.reduce((accum, item) => {
-    const scheduledStart = new Date( item.scheduledStart )
-    const scheduledStartHour = new Date(scheduledStart.toLocaleString("en-US", {timeZone: TIMEZONE})).getHours();;
+    const scheduledStart = new Date(Number(item.scheduledStart * 1000))
+    const scheduledStartHour = moment(scheduledStart).tz(TIMEZONE).hour();
 
     if (accum[item.employeeId]) {
         accum[item.employeeId] = [...accum[item.employeeId], scheduledStartHour]

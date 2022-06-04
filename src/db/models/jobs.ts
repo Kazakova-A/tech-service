@@ -3,13 +3,13 @@ import { Generic, JobStatuses } from '../types';
 export interface JobsData extends Generic {
   customerId: number;
   workStatus: JobStatuses;
-  startedAt: Date | null;
-  completedAt: Date | null;
+  startedAt: number | null;
+  completedAt: number | null;
   employeeId: number;
   diagnosticSpentTime: number | null;
   brand: string;
-  scheduledStart: Date | null;
-  scheduledEnd: Date | null;
+  scheduledStart: number | null;
+  scheduledEnd: number | null;
   technicTypes: string;
 };
 
@@ -33,16 +33,16 @@ export default (
       type: DataTypes.STRING,
     },
     startedAt: {
-      type: DataTypes.DATE,
+      type: DataTypes.INTEGER,
     },
     completedAt: {
-      type: DataTypes.DATE,
+      type: DataTypes.INTEGER,
     },
     scheduledStart: {
-      type: DataTypes.DATE,
+      type: DataTypes.INTEGER,
     },
     scheduledEnd: {
-      type: DataTypes.DATE,
+      type: DataTypes.INTEGER,
     },
     diagnosticSpentTime: {
       type: DataTypes.INTEGER,
@@ -66,12 +66,6 @@ export default (
     isDeleted: {
       defaultValue: false,
       type: DataTypes.BOOLEAN,
-    },
-    created: {
-      type: DataTypes.DATE,
-    },
-    updated: {
-      type: DataTypes.DATE,
     },
   },
   {

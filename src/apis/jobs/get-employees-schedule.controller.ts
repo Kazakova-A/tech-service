@@ -14,12 +14,12 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
     try {
         const { jobs, employees, nextThreeDays } = req;
         const workHours = {
-            [String(nextThreeDays.firstDay)]: getWorkingHours(jobs[String(nextThreeDays.firstDay)]),
-            [String(nextThreeDays.secondDay)]: getWorkingHours(jobs[String(nextThreeDays.secondDay)]),
-            [String(nextThreeDays.thirdDay)]: getWorkingHours(jobs[String(nextThreeDays.thirdDay)]),
+            [nextThreeDays.firstDay]: getWorkingHours(jobs[nextThreeDays.firstDay]),
+            [nextThreeDays.secondDay]: getWorkingHours(jobs[nextThreeDays.secondDay]),
+            [nextThreeDays.thirdDay]: getWorkingHours(jobs[nextThreeDays.thirdDay]),
         };
 
-        const generateDaySchedule = (employee: EmployeesData, workStatus: { [key: string]: number[]}, workDay: Date) => (
+        const generateDaySchedule = (employee: EmployeesData, workStatus: { [key: string]: number[]}, workDay: number) => (
             {
                 employeeId: employee.id,
                 workTime: [
@@ -51,24 +51,24 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
             accum,
             employee,
         ) => {
-            accum[String(nextThreeDays.firstDay)] = [
-                ...accum[String(nextThreeDays.firstDay)],
-                generateDaySchedule(employee, workHours[String(nextThreeDays.firstDay)], nextThreeDays.firstDay),
+            accum[nextThreeDays.firstDay] = [
+                ...accum[nextThreeDays.firstDay],
+                generateDaySchedule(employee, workHours[nextThreeDays.firstDay], nextThreeDays.firstDay),
             ];
-            accum[String(nextThreeDays.secondDay)] = [
-                ...accum[String(nextThreeDays.secondDay)],
-                generateDaySchedule(employee, workHours[String(nextThreeDays.secondDay)], nextThreeDays.secondDay),
+            accum[nextThreeDays.secondDay] = [
+                ...accum[nextThreeDays.secondDay],
+                generateDaySchedule(employee, workHours[nextThreeDays.secondDay], nextThreeDays.secondDay),
             ];
-            accum[String(nextThreeDays.thirdDay)] = [
-                ...accum[String(nextThreeDays.thirdDay)],
-                generateDaySchedule(employee, workHours[String(nextThreeDays.thirdDay)], nextThreeDays.thirdDay)
+            accum[nextThreeDays.thirdDay] = [
+                ...accum[nextThreeDays.thirdDay],
+                generateDaySchedule(employee, workHours[nextThreeDays.thirdDay], nextThreeDays.thirdDay)
             ];
 
             return accum;
         }, {
-            [String(nextThreeDays.firstDay)]: [],
-            [String(nextThreeDays.secondDay)]: [],
-            [String(nextThreeDays.thirdDay)]: [],
+            [nextThreeDays.firstDay]: [],
+            [nextThreeDays.secondDay]: [],
+            [nextThreeDays.thirdDay]: [],
         }
         );
 
