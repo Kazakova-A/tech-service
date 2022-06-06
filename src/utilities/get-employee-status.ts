@@ -33,7 +33,7 @@ const getEmployeeStatus = (
         return 'unavailable';
     }
 
-    if (diff < MAX_DIFFERENCE_IN_SEC) {
+    if (diff > MAX_DIFFERENCE_IN_SEC) {
         return 'expired';
     }
     return 'available'

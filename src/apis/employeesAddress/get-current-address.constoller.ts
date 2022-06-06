@@ -37,10 +37,6 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
         const addressOwnerType = timeLastJobForEmployees.scheduledEnd < midnightToday 
             ? "employee" 
             : "customer";
-
-            console.log(addressOwnerId);
-            console.log(addressOwnerType);
-
         const currentAddress = await db.Addresess.findOne({
             where: {
                 [Op.and]: [
