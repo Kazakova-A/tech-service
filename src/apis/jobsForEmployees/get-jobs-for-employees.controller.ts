@@ -10,6 +10,7 @@ import db from '../../db';
 import { JobStatuses } from '../../db/types';
 import { BRANDS, DEFAULT_ZIP, TYPES } from '../../db/constants';
 import generate from '../../utilities/generator';
+import * as moment from 'moment-timezone';
 
 export default async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -44,11 +45,9 @@ export default async (req: Request, res: Response): Promise<Response> => {
     const employeeJobs = employees.map((employeesItem: any, index: number) => {
       let day = 1;
       const scheduled = (timeToWork:number, indexJob:number) => {
-        const tempDate = new Date();
+        const now = new Date();
 
-        return new Date(new Date(
-          tempDate.setDate(tempDate.getDate()-day)).setHours(workTime[indexJob % 4]+timeToWork)
-        );
+        return Math.floor(moment.utc(now).startOf('day').subtract(day, 'days').hours(workTime[indexJob % 4]+timeToWork).valueOf() / 1000)
       };
 
       const jobsPromises = listJobs.map((job: any, index: number) => {

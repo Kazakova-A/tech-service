@@ -13,8 +13,6 @@ import { createCustomer, updateCustomer } from './crmServesCustomer';
 import { createAddress, updateAddress } from './crmServesAddress';
 import { addressesType } from './crmServesAddress';
 
-const currentDay = new Date();
-
 export default async (req: Request, res: Response): Promise<Response> => {
     try {
         const{
@@ -72,7 +70,6 @@ export default async (req: Request, res: Response): Promise<Response> => {
 
         return response(req, res, rs[200], sm.ok);
     } catch (error) {
-            console.log('===========================', error)
         return response(req, res, rs[500], sm.internalServerError, error);
     }
 }
