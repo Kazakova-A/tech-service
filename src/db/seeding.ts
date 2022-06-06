@@ -11,7 +11,6 @@ import generate from '../utilities/generator';
 
 export default async (db: any, seeding: boolean = false): Promise<Error | void> => {
   try {
-    const currentDay = new Date();
 
     if (!seeding) {
       return log('-- database: seeding is disabled');
@@ -38,9 +37,9 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
       state: addres.state,
       parentId: addres.parentId,
       parentType: addres.parentType,
-      created: currentDay,
-      updated: currentDay,
     }));
+
+    await Promise.all(addresessCreatorPromises);
 
     // create customers and their addresses
     const customersPromises = list.map((item, index) => (
@@ -48,33 +47,26 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
         firstName: `Crisital the ${index}`,
         lastName: `Petrov`,
         email: `user${index}@example.com`,
-        created: currentDay,
-        updated: currentDay,
       })
     ));
 
-    const [firstCustomer, secondCustomer] = await Promise.all(customersPromises);
+    const сustomers = await Promise.all(customersPromises);
 
     const createdAddresse = await Promise.all([
       db.Addresess.create({
-        type: `billing`,
         street: `Almond Ave`,
         city: 'Los Altos',
         state: 'CA',
         zip: 94022,
         country: 'USA',
-        created: currentDay,
-        updated: currentDay,
       }),
+
       db.Addresess.create({
-        type: `billing`,
         street: `Clinton Rd`,
         city: 'Los Altos',
         state: 'CA',
         zip: 94022,
         country: 'USA',
-        created: currentDay,
-        updated: currentDay,
       })
     ]);
 
@@ -99,8 +91,6 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
         startTime,
         endTime,
         timezone: TIMEZONE,
-        created: currentDay,
-        updated: currentDay,
       })
     });
 
@@ -110,8 +100,6 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
       value: brand,
       label: brand.replace(/_/g, " ")
         .replace(/(?:^|\s)\S/g, (symbol) => symbol.toUpperCase()),
-      created: currentDay,
-      updated: currentDay,
     }));
 
     const typesCreatorsPromises = TYPES.map(type => {
@@ -119,8 +107,6 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
       return db.Types.create({
         value: type,
         label: typeStr.charAt(0).toUpperCase() + typeStr.slice(1),
-        created: currentDay,
-        updated: currentDay,
       })
     }
     );
@@ -134,14 +120,10 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
       db.SupportedBrands.create({
         brandId: item,
         employeeId: employees[0].id,
-        created: currentDay,
-        updated: currentDay,
       }),
       db.SupportedBrands.create({
         brandId: item,
         employeeId: employees[1].id,
-        created: currentDay,
-        updated: currentDay,
       })
     ]);
 
@@ -149,14 +131,10 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
       db.SupportedTypes.create({
         typeId: item,
         employeeId: employees[0].id,
-        created: currentDay,
-        updated: currentDay,
       }),
       db.SupportedTypes.create({
         typeId: item,
         employeeId: employees[1].id,
-        created: currentDay,
-        updated: currentDay,
       }),
     ]
     );
@@ -175,7 +153,7 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
 
     const jobPromises = JOBS_MOCK_DATA.map((job: any, index: number) => (
       db.Jobs.create({
-        customerId: index === 1 ? firstCustomer.id : secondCustomer.id,
+        customerId: сustomers[index].id as number,
         workStatus: job.workStatus,
         startedAt: job.startedAt,
         completedAt: job.completedAt,
@@ -184,9 +162,7 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
         scheduledStart: job.scheduledStart,
         scheduledEnd: job.scheduledEnd,
         technicTypes: job.technicTypes,
-        employeeId: employessIds[index] as number,
-        created: currentDay,
-        updated: currentDay,
+        employeeId: employees[index].id as number,
       })
     ));
 

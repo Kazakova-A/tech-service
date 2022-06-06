@@ -9,6 +9,8 @@ import {
 import response from '../../utilities/responses';
 import db from '../../db';
 import { JobsRequest } from 'middlewares/get-employess-by-filters';
+import moment = require('moment');
+
 
 export default async (req: JobsRequest, res: Response): Promise<Response> => {
     try {
@@ -27,7 +29,7 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
             ]
         })
 
-        const midnightToday = new Date().setHours(0,0,0,0);
+        const midnightToday = Math.floor(moment.utc(new Date()).startOf('day').valueOf() / 1000)
 
         const addressOwnerId = timeLastJobForEmployees.scheduledEnd < midnightToday 
             ? timeLastJobForEmployees.employeeId 

@@ -10,10 +10,10 @@ import db from '../../db';
 import { JobStatuses } from '../../db/types';
 import { BRANDS, DEFAULT_ZIP, TYPES } from '../../db/constants';
 import generate from '../../utilities/generator';
+import * as moment from 'moment-timezone';
 
 export default async (req: Request, res: Response): Promise<Response> => {
   try {
-    const currentDay = new Date();
     const listEmployees = [...generate(3)];
 
     const employeesPromises = listEmployees.map((item, index) => {
@@ -25,8 +25,6 @@ export default async (req: Request, res: Response): Promise<Response> => {
         startTime: 8,
         endTime: 16,
         timezone: TIMEZONE,
-        created: currentDay,
-        updated: currentDay,
       })
     });
 
@@ -36,8 +34,6 @@ export default async (req: Request, res: Response): Promise<Response> => {
         firstName: `Crisital the 1`,
         lastName: `Petrov`,
         email: `user1@example.com`,
-        created: currentDay,
-        updated: currentDay,
       })
 
     const spentTime = () => Math.floor(Math.random() * 40) + 40;
@@ -49,11 +45,9 @@ export default async (req: Request, res: Response): Promise<Response> => {
     const employeeJobs = employees.map((employeesItem: any, index: number) => {
       let day = 1;
       const scheduled = (timeToWork:number, indexJob:number) => {
-        const tempDate = new Date();
+        const now = new Date();
 
-        return new Date(new Date(
-          tempDate.setDate(tempDate.getDate()-day)).setHours(workTime[indexJob % 4]+timeToWork)
-        );
+        return Math.floor(moment.utc(now).startOf('day').subtract(day, 'days').hours(workTime[indexJob % 4]+timeToWork).valueOf() / 1000)
       };
 
       const jobsPromises = listJobs.map((job: any, index: number) => {
@@ -68,8 +62,6 @@ export default async (req: Request, res: Response): Promise<Response> => {
           scheduledEnd: scheduled(2, index),
           technicTypes: usedTypes(),
           employeeId: employeesItem.id,
-          created: currentDay,
-          updated: currentDay,
         })
         if ((index + 1) % 4 === 0) {
           day += 1;

@@ -21,12 +21,6 @@ export default (
       defaultValue: false,
       type: DataTypes.BOOLEAN,
     },
-    created: {
-      type: DataTypes.DATE,
-    },
-    updated: {
-      type: DataTypes.DATE,
-    },
   },
   {
     tableName: 'Brands',

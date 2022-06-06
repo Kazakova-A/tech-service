@@ -1,15 +1,17 @@
+import * as moment from 'moment-timezone';
+
 export default (): {
-  start: Date;
-  firstDay: Date;
-  secondDay: Date;
-  thirdDay: Date;
-  end: Date;
+  start: number;
+  firstDay: number;
+  secondDay: number;
+  thirdDay: number;
+  end: number;
 } => {
-  const start =  new Date();
-  const firstDay = new Date(start.setHours(0,0,0,0));
-  const secondDay = new Date(start.setDate(start.getDate()+1));
-  const thirdDay = new Date(start.setDate(start.getDate()+1));
-  const end = new Date(start.setDate(start.getDate()+1));
+  const start =  Math.floor(moment.utc(new Date()).valueOf() / 1000);
+  const firstDay = moment.utc(start * 1000).startOf('day').toDate().valueOf() / 1000;
+  const secondDay = moment.utc(start * 1000).add(1, 'days').startOf('day').toDate().valueOf() / 1000;
+  const thirdDay = moment.utc(start * 1000).add(2, 'days').startOf('day').toDate().valueOf() / 1000;
+  const end = moment.utc(start * 1000).add(3, 'days').startOf('day').toDate().valueOf() / 1000;
 
   return {
     start,

@@ -54,9 +54,9 @@ export default async (req: JobsRequest, res: Response, next: any): Promise<Respo
         })
 
         const jobs = {
-            [String(nextThreeDays.firstDay)]: firstDayJobs,
-            [String(nextThreeDays.secondDay)]: secondDayJobs,
-            [String(nextThreeDays.thirdDay)]: thirsDayJobs,
+            [nextThreeDays.firstDay]: firstDayJobs,
+            [nextThreeDays.secondDay]: secondDayJobs,
+            [nextThreeDays.thirdDay]: thirsDayJobs,
         }
 
         req.jobs = jobs;
