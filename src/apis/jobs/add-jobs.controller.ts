@@ -12,33 +12,38 @@ export default async (req: Request, res: Response) => {
     try {
         const {
             customerId,
-            startedAt,
+            scheduledEnd,
             employeeId,
             brand,
             technicTypes,
+            scheduledStart,
+            workStatus,
+            startedAt
         } = req.body
-
         if (!(
             technicTypes
             || brand
             || customerId
-            || startedAt
+            || scheduledEnd
             || employeeId
+            || scheduledStart
+            || workStatus
+            || startedAt
         )) {
             return response(req, res, rs[400], sm.missingData);
         }
         const addedJobs = await db.Jobs.create({
             customerId,
-            workStatus: JobStatuses.scheduled,
-            startedAt,
+            scheduledEnd,
             employeeId,
             brand,
             technicTypes,
+            scheduledStart,
+            workStatus: JobStatuses.scheduled,
+            startedAt: null
         });
         return response(req, res, rs[200], sm.ok, addedJobs);
     } catch (error) {
-
         return response(req, res, rs[500], sm.internalServerError, error);
     }
 }
-
