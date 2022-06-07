@@ -1,6 +1,7 @@
 import { Generic } from '../types';
 
 export interface CustomersData extends Generic {
+  crmCustomersId: string,
   firstName: string;
   lastName: string;
   email: string;
@@ -9,7 +10,7 @@ export interface CustomersData extends Generic {
   workNumber: string;
   company: string;
   notificationEnabled: boolean;
-  tags: any; // TODO: set valid format
+  tags: string;
 };
 
 export default (
@@ -18,6 +19,9 @@ export default (
 ) => database.define(
   'Customers',
   {
+    crmCustomersId:{
+      type: DataTypes.STRING,
+    },
     firstName: {
       type: DataTypes.STRING,
     },
@@ -44,17 +48,11 @@ export default (
       type: DataTypes.BOOLEAN,
     },
     tags: {
-      type: DataTypes.STRING, // TODO: set valid format
+      type: DataTypes.STRING,
     },
     isDeleted: {
       defaultValue: false,
       type: DataTypes.BOOLEAN,
-    },
-    created: {
-      type: DataTypes.INTEGER,
-    },
-    updated: {
-      type: DataTypes.INTEGER,
     },
   },
   {

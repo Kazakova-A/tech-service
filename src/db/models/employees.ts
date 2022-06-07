@@ -41,12 +41,6 @@ export default (
       defaultValue: false,
       type: DataTypes.BOOLEAN,
     },
-    created: {
-      type: DataTypes.INTEGER,
-    },
-    updated: {
-      type: DataTypes.INTEGER,
-    },
   },
   {
     tableName: 'Employees',

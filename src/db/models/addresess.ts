@@ -1,12 +1,15 @@
 import { Generic, JobStatuses } from '../types';
 
 export interface AddresessData extends Generic {
+  crmAddressId: string;
   street: string;
-  houseNumber: number;
+  houseNumber: string;
   city: string;
   state: string;
-  adressId: number;
-  adressType: string;
+  zip: string;
+  country: string;
+  parentId: number;
+  parentType: string;
 };
 
 export default (
@@ -15,11 +18,14 @@ export default (
 ) => database.define(
   'Addresess',
   {
+    crmAddressId: {
+      type: DataTypes.STRING,
+    },
     street: {
       type: DataTypes.STRING,
     },
     houseNumber: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
     },
     city: {
       type: DataTypes.STRING,
@@ -27,21 +33,21 @@ export default (
     state: {
       type: DataTypes.STRING,
     },
-    adressId: {
+    zip: {
+      type: DataTypes.STRING,
+    },
+    country: {
+      type: DataTypes.STRING,
+    },
+    parentId: {
       type: DataTypes.INTEGER,
     },
-    adressType: {
+    parentType: {
       type: DataTypes.STRING,
     },
     isDeleted: {
       defaultValue: false,
       type: DataTypes.BOOLEAN,
-    },
-    created: {
-      type: DataTypes.INTEGER,
-    },
-    updated: {
-      type: DataTypes.INTEGER,
     },
   },
   {

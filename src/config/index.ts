@@ -61,5 +61,9 @@ export const SERVER_MESSAGES = {
 
   ok: 'OK',
 
+  employeesNotFound: 'Employees not found',
+
+  
+
 };
 

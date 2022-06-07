@@ -13,7 +13,6 @@ import { JobsRequest } from 'middlewares/get-employess-by-filters';
 export default async (req: JobsRequest, res: Response): Promise<Response> => {
     try {
         const { jobs, employees, nextThreeDays } = req;
-
         const workHours = {
             [nextThreeDays.firstDay]: getWorkingHours(jobs[nextThreeDays.firstDay]),
             [nextThreeDays.secondDay]: getWorkingHours(jobs[nextThreeDays.secondDay]),
@@ -21,6 +20,7 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
         };
 
         const generateDaySchedule = (employee: EmployeesData, workStatus: { [key: string]: number[]}, workDay: number) => (
+
             {
                 employeeId: employee.id,
                 workTime: [

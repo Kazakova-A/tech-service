@@ -11,6 +11,7 @@ const getEmployeeStatus = (
     workDay: number, // milliseconds - working day in utc
 ) => {
     const MAX_DIFFERENCE_IN_SEC = 1440; // 24 minutes
+
     const currentTimeByTimezone = moment(currentTime * 1000).tz(employee.timezone).valueOf() / 1000; // current time, when request was sended in emploees timezone
 
     const momentWorkDay = moment(workDay * 1000);
@@ -23,8 +24,8 @@ const getEmployeeStatus = (
     if (
         employeeStartHourByDefaultZone < employee.startTime
         || employeeStartHourByDefaultZone > employee.endTime
-        ||( employeeStartHourByDefaultZone > workingHour && employeeStartHourByDefaultZone < endHour)
-        ) {
+        || (employeeStartHourByDefaultZone > workingHour && employeeStartHourByDefaultZone < endHour)
+    ) {
         return 'not working';
     }
 
@@ -32,7 +33,7 @@ const getEmployeeStatus = (
         return 'unavailable';
     }
 
-    if ( diff > MAX_DIFFERENCE_IN_SEC) {
+    if (diff > MAX_DIFFERENCE_IN_SEC) {
         return 'expired';
     }
     return 'available'

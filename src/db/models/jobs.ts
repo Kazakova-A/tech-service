@@ -33,19 +33,19 @@ export default (
       type: DataTypes.STRING,
     },
     startedAt: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
     },
     completedAt: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
     },
     scheduledStart: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
     },
     scheduledEnd: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
     },
     diagnosticSpentTime: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
     },
     employeeId: {
       allowNull: false,
@@ -66,12 +66,6 @@ export default (
     isDeleted: {
       defaultValue: false,
       type: DataTypes.BOOLEAN,
-    },
-    created: {
-      type: DataTypes.INTEGER,
-    },
-    updated: {
-      type: DataTypes.INTEGER,
     },
   },
   {

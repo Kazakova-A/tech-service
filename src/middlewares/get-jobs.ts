@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { Op } from "sequelize";
 import {
     RESPONSE_STATUSES as rs,
     SERVER_MESSAGES as sm,
@@ -8,6 +9,7 @@ import db from '../db';
 import { JobsRequest } from './get-employess-by-filters';
 import getFirstDays from '../utilities/get-first-three-days';
 
+
 export default async (req: JobsRequest, res: Response, next: any): Promise<Response> => {
     try {
         const {
@@ -16,43 +18,45 @@ export default async (req: JobsRequest, res: Response, next: any): Promise<Respo
 
         const nextThreeDays = getFirstDays();
 
-        const ids = employees.map(({ id }) => id).join(',');
+        const ids = employees.map(({ id }) => id)
 
+        const firstDayJobs = await db.Jobs.findAll({
+            where: {
+                employeeId: {[Op.in]: ids},
+                workStatus: { [Op.or]: ['scheduled', 'in_progress']},
+                [Op.and]: [
+                    { scheduledStart: { [Op.gte]: nextThreeDays.firstDay } },
+                    { scheduledEnd: { [Op.lte]: nextThreeDays.secondDay } },
+                ]
+            }
+        })
 
-        const generateQuery = (start: number, end: number) => (
-            `
-                SELECT * FROM "Jobs"
-                WHERE "employeeId" IN(${ids})
+        const secondDayJobs = await db.Jobs.findAll({
+            where: {
+                employeeId: {[Op.in]: ids},
+                workStatus: { [Op.or]: ['scheduled', 'in_progress']},
+                [Op.and]: [
+                    { scheduledStart: { [Op.gte]: nextThreeDays.secondDay } },
+                    { scheduledEnd: { [Op.lte]: nextThreeDays.thirdDay } },
+                ]
+            }
+        })
 
-                AND (
-                    "scheduledStart" = ${start}
-                    OR
-                    "scheduledStart" > ${start}
-                )
+        const thirsDayJobs = await db.Jobs.findAll({
+            where: {
+                employeeId: {[Op.in]: ids},
+                workStatus: { [Op.or]: ['scheduled', 'in_progress']},
+                [Op.and]: [
+                    { scheduledStart: { [Op.gte]: nextThreeDays.thirdDay } },
+                    { scheduledEnd: { [Op.lte]: nextThreeDays.end } },
+                ]
+            }
+        })
 
-                AND (
-                    "scheduledEnd" = ${end}
-                    OR
-                    "scheduledEnd" < ${end}
-                )
-
-                AND "workStatus" = 'scheduled'
-                OR  "workStatus" = 'in_progress'
-                ;
-            `
-        )
-
-        const firstDayJobsQuery = generateQuery(nextThreeDays.firstDay, nextThreeDays.secondDay); // start - the start of the current day, end - the next day
-        const [firstDayJobs = []] = await db.connection.query(firstDayJobsQuery);
-        const secondDayJobsQuery = generateQuery(nextThreeDays.secondDay, nextThreeDays.thirdDay);
-        const [secondDayJobs = []] = await db.connection.query(secondDayJobsQuery);
-
-        const thirdDayJobsQuery = generateQuery(nextThreeDays.thirdDay, nextThreeDays.end);
-        const [thirdDayJobs = []] = await db.connection.query(thirdDayJobsQuery);
         const jobs = {
             [nextThreeDays.firstDay]: firstDayJobs,
             [nextThreeDays.secondDay]: secondDayJobs,
-            [nextThreeDays.thirdDay]: thirdDayJobs,
+            [nextThreeDays.thirdDay]: thirsDayJobs,
         }
 
         req.jobs = jobs;
