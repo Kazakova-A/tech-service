@@ -8,9 +8,8 @@ import {
 
 import response from '../../utilities/responses';
 import db from '../../db';
-import { JobsRequest } from 'middlewares/get-employess-by-filters';
 
-export default async (req: JobsRequest, res: Response): Promise<Response> => {
+export default async (req: Request, res: Response): Promise<Response> => {
     try {
 
         const timeNextJobForEmployees = await db.Jobs.findOne({
