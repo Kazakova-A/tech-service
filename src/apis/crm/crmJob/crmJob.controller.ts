@@ -14,9 +14,6 @@ import { createCustomer, updateCustomer } from './crmServesCustomer';
 import { createEmployees, updateEmployees } from './crmServesEmployees';
 import { createAddress, updateAddress } from './crmServesAddress';
 
-
-
-
 export default async (req: Request, res: Response): Promise<Response> => {
 
     try {
@@ -29,6 +26,7 @@ export default async (req: Request, res: Response): Promise<Response> => {
             await db.Jobs.destroy(
                 {where: { crmJobId: job.id} }
             )
+            return response(req, res, rs[200], sm.ok);
         } 
         if ( event === "job.created" || "job.updated" ) {
             const currentCustomer = await db.Customers.findOne(
