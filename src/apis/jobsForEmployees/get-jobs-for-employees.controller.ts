@@ -25,6 +25,7 @@ export default async (req: Request, res: Response): Promise<Response> => {
         startTime: 8,
         endTime: 16,
         timezone: TIMEZONE,
+        role: 'role',
       })
     });
 
@@ -62,6 +63,12 @@ export default async (req: Request, res: Response): Promise<Response> => {
           scheduledEnd: scheduled(2, index),
           technicTypes: usedTypes(),
           employeeId: employeesItem.id,
+          name: 'name',
+          description: 'description',
+          notes: 'notes',
+          total_amount: 0,
+          outstanding_balance: 0,
+          tags: 'tags',
         })
         if ((index + 1) % 4 === 0) {
           day += 1;

@@ -12,6 +12,7 @@ import employeesDiagnosticCoefficient from './apis/employeesDiagnosticCoefficien
 import employeesList from './apis/employeesList';
 import jobsList from './apis/jobsList';
 import crmCustomer from './apis/crm/crmCustomer/index';
+import crmJob from './apis/crm/crmJob/index';
 
 const app = express();
 app.use(bodyParser.json());
@@ -27,6 +28,7 @@ app.use('/employeesList', employeesList);
 app.use('/jobsList', jobsList);
 
 app.use('/crmCustomer', crmCustomer);
+app.use('/crmJob', crmJob);
 
 // start the Express server
 app.listen(PORT, () => {

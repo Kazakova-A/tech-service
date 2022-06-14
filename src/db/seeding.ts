@@ -91,6 +91,7 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
         startTime,
         endTime,
         timezone: TIMEZONE,
+        role: 'role',
       })
     });
 
@@ -163,6 +164,12 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
         scheduledEnd: job.scheduledEnd,
         technicTypes: job.technicTypes,
         employeeId: employees[index].id as number,
+        name: job.name,
+        description: job.description,
+        notes: job.notes,
+        total_amount: job.total_amount,
+        outstanding_balance: job.outstanding_balance,
+        tags: job.tags,
       })
     ));
 

@@ -10,32 +10,28 @@ export type addressesType = {
     country: string;
 }
 
-export const createAllAddress = (addresses: addressesType[], currentCustomerId: string) => addresses.map((address:any) => (
-    db.Addresess.create({
+export const createAddress = (address: addressesType, customerRecordId: string) => db.Addresess.create({
         crmAddressId: address.id,
         street: address.street,
         houseNumber: address.street_line_2,
         city: address.city,
         state: address.state,
-        parentId: currentCustomerId,
+        parentId: customerRecordId,
         parentType: 'customer',
         zip: address.zip,
         country: address.country
     })
-));
 
-export const updateAllAddress = (addresses: addressesType[], currentCustomerId: string) => addresses.map((address:any) => (
-    db.Addresess.update({
+export const updateAddress = (address: addressesType, customerRecordId: string) => db.Addresess.update({
         crmAddressId: address.id,
         street: address.street,
         houseNumber: address.street_line_2,
         city: address.city,
         state: address.state,
-        parentId: currentCustomerId,
+        parentId: customerRecordId,
         parentType: 'customer',
         zip: address.zip,
         country: address.country
     },
     { where: { crmAddressId: address.id } }
     )
-));

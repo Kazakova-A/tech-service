@@ -1,6 +1,13 @@
 import { Generic, JobStatuses } from '../types';
 
 export interface JobsData extends Generic {
+  crmJobId: string;
+  name: string;
+  description: string;
+  notes:string;
+  total_amount: number;
+  outstanding_balance: number;
+  tags: string;
   customerId: number;
   workStatus: JobStatuses;
   startedAt: number | null;
@@ -28,6 +35,27 @@ export default (
         model: 'Customers',
       },
       type: DataTypes.INTEGER,
+    },
+    crmJobId: {
+      type: DataTypes.STRING,
+    },
+    name: {
+      type: DataTypes.STRING,
+    },
+    description: {
+      type: DataTypes.STRING,
+    },
+    notes:{
+      type: DataTypes.STRING,
+    },
+    total_amount: {
+      type: DataTypes.INTEGER,
+    },
+    outstanding_balance: {
+      type: DataTypes.INTEGER,
+    },
+    tags: {
+      type: DataTypes.STRING,
     },
     workStatus: {
       type: DataTypes.STRING,

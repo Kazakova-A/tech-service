@@ -1,8 +1,8 @@
 import { Router } from 'express';
 
-import crmCustomer from './crmCustomer.controller';
+import crmJob from './crmJob.controller';
 
 const router = Router();
-router.post('/', crmCustomer);
+router.post('/', crmJob);
 
 export default router;
