@@ -1,4 +1,6 @@
 import { Request, Response } from 'express';
+import { Op } from "sequelize";
+import db from '../../db';
 
 import {
     RESPONSE_STATUSES as rs,
@@ -9,7 +11,7 @@ import getWorkingHours from '../../utilities/get-working-hours';
 import getEmployeeStatus from '../../utilities/get-employee-status';
 import { EmployeesData } from '../../db';
 import { JobsRequest } from 'middlewares/get-employess-by-filters';
-import getCurentAddress from '../../utilities/get-curent-address';
+import moment = require('moment');
 
 export default async (req: JobsRequest, res: Response): Promise<Response> => {
     try {
@@ -20,23 +22,44 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
             [nextThreeDays.thirdDay]: getWorkingHours(jobs[nextThreeDays.thirdDay]),
         };
 
-        const getLastAddress = ( jobs: any, workDay: number) => {
-
-            console.log(jobs,"jobs")
-            console.log(workDay,"workDay")
-
-            
-
-            const currentDay = jobs.filter((key: string, value: any) => {
-                workDay === Number(key)
+        const getLastAddress = async ( jobs: any, workDay: number, scheduleStartJob: number, employee: any) => {
+            const JobsBeforeNext = jobs[workDay].filter(( item: any ) => {
+                const startTimeJob = moment(item.scheduledStart * 1000).tz(employee.timezone).hour()
+                return startTimeJob < scheduleStartJob
             })
 
+            if (JobsBeforeNext.length === 0) {
+                const currentAddress = await db.Addresess.findOne({
+                    where: {
+                        [Op.and]: [
+                            { parentType: "employee" },
+                            { parentId: employee.id }
+                        ]
+                    }
+                })
 
-            console.log(currentDay,"currentDay")
+                return ( currentAddress ? {
+                        id: currentAddress.id,
+                        street: currentAddress.street,
+                        houseNumber: currentAddress.houseNumber,
+                        city: currentAddress.city
+                    } : {}
+                )
+            }
+
+            const JobsBeforeNextSort = JobsBeforeNext.sort(( a: any, b: any ) => a.scheduledStart > b.scheduledStart ? 1 : -1);
+            const currentAddress = JobsBeforeNextSort[JobsBeforeNextSort.length - 1].address
+
+            return ( currentAddress ? {
+                    id: currentAddress.id,
+                    street: currentAddress.street,
+                    houseNumber: currentAddress.houseNumber,
+                    city: currentAddress.city
+                } : {}
+            )
         }
 
         const generateDaySchedule = async (employee: EmployeesData, workStatus: { [key: string]: number[]}, workDay: number) => (
-
             {
                 employeeId: employee.id,
                 workTime: [
@@ -45,66 +68,48 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
                         end: 10,
                         status: getEmployeeStatus(employee, workStatus, 8, nextThreeDays.start, workDay),
                         day: workDay,
-                        address: getLastAddress( jobs, workDay ), //employee.id, 8,
+                        address: await getLastAddress( jobs, workDay, 8, employee )
                     },
                     {
                         start: 10,
                         end: 12,
                         status: getEmployeeStatus(employee, workStatus, 10, nextThreeDays.start, workDay),
                         day: workDay,
-                        // address: getCurentAddress(employee.id),
+                        address: await getLastAddress( jobs, workDay, 10, employee )
                     },
                     {
                         start: 12,
                         end: 14,
                         status: getEmployeeStatus(employee, workStatus, 12, nextThreeDays.start, workDay),
                         day: workDay,
-                        // address: getCurentAddress(employee.id),
+                        address: await getLastAddress( jobs, workDay, 12, employee )                    
                     },
                     {
                         start: 16,
                         end: 18,
                         status: getEmployeeStatus(employee, workStatus, 16, nextThreeDays.start, workDay),
                         day: workDay,
-                        // address: getCurentAddress(employee.id),
+                        address: await getLastAddress( jobs, workDay, 16, employee )                    
                     },
-                ]//.filter(item => item.status === 'available')
+                ].filter(item => item.status === 'available')
             }
         );
 
-        const employeesSchedule = employees.reduce((
-            accum,
-            employee,
-        ) => {
-            accum[nextThreeDays.firstDay] = [
-                ...accum[nextThreeDays.firstDay],
-                generateDaySchedule(employee, workHours[nextThreeDays.firstDay], nextThreeDays.firstDay),
-            ];
-            accum[nextThreeDays.secondDay] = [
-                ...accum[nextThreeDays.secondDay],
-                generateDaySchedule(employee, workHours[nextThreeDays.secondDay], nextThreeDays.secondDay),
-            ];
-            accum[nextThreeDays.thirdDay] = [
-                ...accum[nextThreeDays.thirdDay],
-                generateDaySchedule(employee, workHours[nextThreeDays.thirdDay], nextThreeDays.thirdDay)
-            ];
+        const lineList = await Promise.all([...employees.map(async(employee) => {
+            const first = await generateDaySchedule(employee, workHours[nextThreeDays.firstDay], nextThreeDays.firstDay);
+            const second = await generateDaySchedule(employee, workHours[nextThreeDays.secondDay], nextThreeDays.secondDay);
+            const third = await generateDaySchedule(employee, workHours[nextThreeDays.thirdDay], nextThreeDays.thirdDay);
+            return [
+                first,
+                second,
+                third,
+            ]
+        })])
 
-            return accum;
-        }, {
-            [nextThreeDays.firstDay]: [],
-            [nextThreeDays.secondDay]: [],
-            [nextThreeDays.thirdDay]: [],
-        }
-        );
-
-        const lineList = await Promise.all([
-            ...employeesSchedule[nextThreeDays.firstDay],
-            ...employeesSchedule[nextThreeDays.secondDay],
-            ...employeesSchedule[nextThreeDays.thirdDay]])
-            
-        const result = lineList.filter(item => item.workTime.length > 0)
+        const result = lineList.flat()
+            .filter(item => item.workTime.length > 0)
             .map(item => {
-                return item.workTime.map((line: { employeeId: any, start: number, end: number, status: string }) => {
+                return item.workTime.map((line: any) => {
                     line.employeeId = item.employeeId;
                     return line
                 })
@@ -112,7 +117,7 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
             .flat()
             .sort((a,b) => a.workDay > b.workDay ? 1 : a.start >= b.start ? 1 : -1);
 
-        return response(req, res, rs[200], sm.ok, employeesSchedule);
+        return response(req, res, rs[200], sm.ok, result);
     } catch (error) {
         return response(req, res, rs[500], sm.internalServerError, error);
     }
