@@ -31,6 +31,18 @@ export default async (req: JobsRequest, res: Response, next: any): Promise<Respo
             }
         })
 
+        firstDayJobs.forEach(async(item: {
+            address: any; id: any; 
+        }) => {
+            const address = await db.Addresess.findOne({
+                where: {
+                    parentId: item.id,
+                    parentType: "Job",
+                }
+            })
+            item.address = address;
+        })
+
         const secondDayJobs = await db.Jobs.findAll({
             where: {
                 employeeId: {[Op.in]: ids},
@@ -42,6 +54,18 @@ export default async (req: JobsRequest, res: Response, next: any): Promise<Respo
             }
         })
 
+        secondDayJobs.forEach(async(item: {
+            address: any; id: any; 
+        }) => {
+            const address = await db.Addresess.findOne({
+                where: {
+                    parentId: item.id,
+                    parentType: "Job",
+                }
+            })
+            item.address = address;
+        })
+
         const thirsDayJobs = await db.Jobs.findAll({
             where: {
                 employeeId: {[Op.in]: ids},
@@ -51,6 +75,18 @@ export default async (req: JobsRequest, res: Response, next: any): Promise<Respo
                     { scheduledEnd: { [Op.lte]: nextThreeDays.end } },
                 ]
             }
+        })
+
+        thirsDayJobs.forEach(async(item: {
+            address: any; id: any; 
+        }) => {
+            const address = await db.Addresess.findOne({
+                where: {
+                    parentId: item.id,
+                    parentType: "Job",
+                }
+            })
+            item.address = address;
         })
 
         const jobs = {

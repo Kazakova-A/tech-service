@@ -18,7 +18,7 @@ export default async (req: Request, res: Response): Promise<Response> => {
 
     const employeesPromises = listEmployees.map((item, index) => {
       return db.Employees.create({
-        zip: index === 1 ? DEFAULT_ZIP : (DEFAULT_ZIP + index),
+        zip: DEFAULT_ZIP,
         firstName: `Peter the ${index}`,
         lastName: `Romanov`,
         email: `dummy${index}@example.com`,
@@ -30,6 +30,20 @@ export default async (req: Request, res: Response): Promise<Response> => {
     });
 
     const employees = await Promise.all(employeesPromises);
+
+    const employeeAddresses = employees.map((employeesItem: any) => {
+      db.Addresess.create({
+        street: `Clinton Rd`,
+        city: 'Los Altos',
+        state: 'CA',
+        zip: 94022,
+        country: 'USA',
+        parentId: employeesItem.id,
+        parentType: "employee",
+      })
+    })
+
+    await Promise.all(employeeAddresses);
 
     const customer = await db.Customers.create({
         firstName: `Crisital the 1`,
@@ -43,6 +57,9 @@ export default async (req: Request, res: Response): Promise<Response> => {
     const listJobs = [...generate(20)];
     const workTime = [8, 10, 12, 14];
 
+    const brand = () => Math.floor(Math.random() * 41) + 1;
+    const types = () => Math.floor(Math.random() * 11) + 1;
+
     const employeeJobs = employees.map((employeesItem: any, index: number) => {
       let day = 1;
       const scheduled = (timeToWork:number, indexJob:number) => {
@@ -51,8 +68,8 @@ export default async (req: Request, res: Response): Promise<Response> => {
         return Math.floor(moment.utc(now).startOf('day').subtract(day, 'days').hours(workTime[indexJob % 4]+timeToWork).valueOf() / 1000)
       };
 
-      const jobsPromises = listJobs.map((job: any, index: number) => {
-        const jobPromise = db.Jobs.create({
+      const jobsPromises = listJobs.map(async(job: any, index: number) => {
+        const draftJob = await db.Jobs.create({
           customerId: customer.id,
           workStatus: JobStatuses.completed,
           startedAt: null,
@@ -73,15 +90,41 @@ export default async (req: Request, res: Response): Promise<Response> => {
         if ((index + 1) % 4 === 0) {
           day += 1;
         };
-        return jobPromise;
+
+        await db.Addresess.create({
+          street: `street${index}`,
+          houseNumber: `houseNumber ${index}`,
+          city: `city${index}`,
+          state: `state${index}`,
+          zip: 94022,
+          parentId: draftJob.id,
+          parentType: 'Job',
+        });
+    
+        await db.SupportedBrands.create({
+            brandId: brand(),
+            employeeId: employeesItem.id,
+        });
+        await db.SupportedBrands.create({
+            brandId: brand(),
+            employeeId: employeesItem.id,
+        });
+    
+        await db.SupportedTypes.create({
+            typeId: types(),
+            employeeId: employeesItem.id,
+        });
+        await db.SupportedTypes.create({
+            typeId: types(),
+            employeeId: employeesItem.id,
+        });
+
+        return draftJob;
       })
       return jobsPromises
     });
-    await Promise.all(employeeJobs[0])
-    await Promise.all(employeeJobs[1])
-    await Promise.all(employeeJobs[2])
 
-    return response(req, res, rs[200], sm.ok,);
+    return response(req, res, rs[200], sm.ok, employeeJobs);
   } catch (error) {
         return response(req, res, rs[500], sm.internalServerError, error);
   }

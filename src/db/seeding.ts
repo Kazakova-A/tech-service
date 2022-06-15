@@ -35,10 +35,10 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
       houseNumber: addres.houseNumber,
       city: addres.city,
       state: addres.state,
+      zip: 94022,
       parentId: addres.parentId,
       parentType: addres.parentType,
     }));
-
     await Promise.all(addresessCreatorPromises);
 
     // create customers and their addresses
@@ -49,7 +49,6 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
         email: `user${index}@example.com`,
       })
     ));
-
     const сustomers = await Promise.all(customersPromises);
 
     const createdAddresse = await Promise.all([
@@ -94,7 +93,6 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
         role: 'role',
       })
     });
-
     const employees = await Promise.all(employeesPromises);
 
     const brandCreatorsPromises = BRANDS.map(brand => db.Brands.create({
@@ -111,7 +109,6 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
       })
     }
     );
-
     await Promise.all([...brandCreatorsPromises, ...typesCreatorsPromises]);
 
     const brands = [...generate(42)];
@@ -139,7 +136,6 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
       }),
     ]
     );
-
     await Promise.all([...supportedBrandsPromises, ...supportedTypesPromises]);
 
     // create jobs
@@ -151,7 +147,6 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
       4: 1,
       5: 2,
     }
-
     const jobPromises = JOBS_MOCK_DATA.map((job: any, index: number) => (
       db.Jobs.create({
         customerId: сustomers[index].id as number,
@@ -172,8 +167,18 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
         tags: job.tags,
       })
     ));
+    const jobs = await Promise.all(jobPromises);
 
-    await Promise.all(jobPromises);
+    const addresessJobPromises = jobs.map(( job, index ) => db.Addresess.create({
+      street: `street${index}`,
+      houseNumber: `houseNumber ${index}`,
+      city: `city${index}`,
+      state: `state${index}`,
+      zip: 94022,
+      parentId: job.id,
+      parentType: "Job",
+    }));
+    await Promise.all(addresessJobPromises);
 
     return log('-- database: seeding is done');
   } catch (error) {
