@@ -1,5 +1,10 @@
 import { Generic, JobStatuses } from '../types';
 
+export const addressParentType = {
+  job: "job",
+  customer: "customer",
+  employees: "emploees"
+};
 export interface AddresessData extends Generic {
   crmAddressId: string;
   street: string;

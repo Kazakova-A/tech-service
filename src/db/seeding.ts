@@ -8,6 +8,7 @@ import {
 import { TIMEZONE } from '../config';
 import log from '../utilities/log';
 import generate from '../utilities/generator';
+import { addressParentType } from './models/addresess'
 
 export default async (db: any, seeding: boolean = false): Promise<Error | void> => {
   try {
@@ -28,46 +29,35 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
     }
 
     // do the seeding
+
+    // create customers 
+
     const list = [...generate(15)];
 
-    const addresessCreatorPromises = ADDRESESSDATA.map(addres => db.Addresess.create({
-      street: addres.street,
-      houseNumber: addres.houseNumber,
-      city: addres.city,
-      state: addres.state,
-      zip: 94022,
-      parentId: addres.parentId,
-      parentType: addres.parentType,
-    }));
-    await Promise.all(addresessCreatorPromises);
-
-    // create customers and their addresses
     const customersPromises = list.map((item, index) => (
       db.Customers.create({
         firstName: `Crisital the ${index}`,
         lastName: `Petrov`,
         email: `user${index}@example.com`,
+        mobileNumber: `+1(454)322-44-${index}`,
+        homeNumber: `45-22-34`,
+        workNumber: `88-88-88`,
       })
     ));
     const сustomers = await Promise.all(customersPromises);
 
-    const createdAddresse = await Promise.all([
-      db.Addresess.create({
-        street: `Almond Ave`,
-        city: 'Los Altos',
-        state: 'CA',
-        zip: 94022,
-        country: 'USA',
-      }),
+    // create Addresess for сustomers
 
-      db.Addresess.create({
-        street: `Clinton Rd`,
-        city: 'Los Altos',
-        state: 'CA',
-        zip: 94022,
-        country: 'USA',
-      })
-    ]);
+    const addressesCustomerPromises = сustomers.map(( сustomer, index ) => db.Addresess.create({
+      street: `Almond Ave ${index}`,
+      houseNumber: `№ ${index}`,
+      city: `Los Altos ${index}`,
+      state: `CA ${index}`,
+      zip: 94022,
+      parentId: сustomer.id,
+      parentType: addressParentType.customer,
+    }));
+    await Promise.all(addressesCustomerPromises);
 
     // create employees
     const TIME_VARIANTS = {
@@ -95,11 +85,28 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
     });
     const employees = await Promise.all(employeesPromises);
 
+    // create Addresess for emploees
+
+    const addressesEmploeesPromises = сustomers.map(( emploees, index ) => db.Addresess.create({
+      street: `Eonky Rd ${index}`,
+      houseNumber: `№ 5${index}`,
+      city: `Eos Eltos ${index}`,
+      state: `CE ${index}`,
+      zip: 94022,
+      parentId: emploees.id,
+      parentType: addressParentType.employees,
+    }));
+    await Promise.all(addressesEmploeesPromises);
+
+    // create BRANDS
+
     const brandCreatorsPromises = BRANDS.map(brand => db.Brands.create({
       value: brand,
       label: brand.replace(/_/g, " ")
         .replace(/(?:^|\s)\S/g, (symbol) => symbol.toUpperCase()),
     }));
+
+    // create TYPES
 
     const typesCreatorsPromises = TYPES.map(type => {
       const typeStr = type.replace(/_/g, " ");
@@ -114,6 +121,9 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
     const brands = [...generate(42)];
     const types = [...generate(12)];
 
+
+    // create SupportedBrands for employees
+
     const supportedBrandsPromises = brands.map((item) => [
       db.SupportedBrands.create({
         brandId: item,
@@ -124,6 +134,8 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
         employeeId: employees[1].id,
       })
     ]);
+
+    // create SupportedTypes for employees
 
     const supportedTypesPromises = types.map((item) => [
       db.SupportedTypes.create({
@@ -169,6 +181,8 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
     ));
     const jobs = await Promise.all(jobPromises);
 
+    // create Addresess for job
+
     const addresessJobPromises = jobs.map(( job, index ) => db.Addresess.create({
       street: `street${index}`,
       houseNumber: `houseNumber ${index}`,
@@ -176,7 +190,7 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
       state: `state${index}`,
       zip: 94022,
       parentId: job.id,
-      parentType: "Job",
+      parentType: addressParentType.job,
     }));
     await Promise.all(addresessJobPromises);
 
