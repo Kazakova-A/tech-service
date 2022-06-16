@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Op } from "sequelize";
 import db from '../../db';
+import { addressParentType } from '../../db/types'
 
 import {
     RESPONSE_STATUSES as rs,
@@ -29,10 +30,10 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
             })
 
             if (JobsBeforeNext.length === 0) {
-                const currentAddress = await db.Addresess.findOne({
+                const currentAddress = await db.Addresses.findOne({
                     where: {
                         [Op.and]: [
-                            { parentType: "employee" },
+                            { parentType: addressParentType.Employees },
                             { parentId: employee.id }
                         ]
                     }
@@ -42,7 +43,7 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
                         id: currentAddress.id,
                         street: currentAddress.street,
                         houseNumber: currentAddress.houseNumber,
-                        city: currentAddress.city
+                        city: currentAddress.city,
                     } : {}
                 )
             }
@@ -54,7 +55,7 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
                     id: currentAddress.id,
                     street: currentAddress.street,
                     houseNumber: currentAddress.houseNumber,
-                    city: currentAddress.city
+                    city: currentAddress.city,
                 } : {}
             )
         }

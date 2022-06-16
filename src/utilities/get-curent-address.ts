@@ -1,6 +1,7 @@
 import { Op } from "sequelize";
 import db from '../db';
 import * as moment from 'moment-timezone';
+import { addressParentType } from '../db/types'
 
 const getCurentAddress = async (employeeId: string | number) => {
     const timeLastJobForEmployees = await db.Jobs.findOne({
@@ -18,10 +19,10 @@ const getCurentAddress = async (employeeId: string | number) => {
     })
 
     if (!timeLastJobForEmployees) {
-        const currentAddress = await db.Addresess.findOne({
+        const currentAddress = await db.Addresses.findOne({
             where: {
                 [Op.and]: [
-                    { parentType: "employee" },
+                    { parentType: addressParentType.Employees },
                     { parentId: employeeId }
                 ]
             }
@@ -36,9 +37,9 @@ const getCurentAddress = async (employeeId: string | number) => {
         ? timeLastJobForEmployees.employeeId 
         : timeLastJobForEmployees.customerId;
     const addressOwnerType = timeLastJobForEmployees.scheduledEnd < midnightToday 
-        ? "employee" 
-        : "customer";
-    const currentAddress = await db.Addresess.findOne({
+        ? addressParentType.Employees 
+        : addressParentType.Customer;
+    const currentAddress = await db.Addresses.findOne({
         where: {
             [Op.and]: [
                 { parentType: addressOwnerType },

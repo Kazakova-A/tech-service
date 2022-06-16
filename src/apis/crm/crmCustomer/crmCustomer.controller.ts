@@ -7,6 +7,7 @@ import {
 
 import response from '../../../utilities/responses';
 import db from '../../../db';
+import { addressParentType } from '../../../db/types'
 import { CrmCustomerRequest } from '../crmCustomerInterface';
 import { createCustomer, updateCustomer } from './crmServesCustomer';
 import { createAllAddress, updateAllAddress } from './crmServesAddress';
@@ -28,8 +29,8 @@ export default async (req: Request, res: Response): Promise<Response> => {
             )
 
             const addressesPromises = customer.addresses.map(( address: addressesType ) => (
-                db.Addresess.destroy(
-                    {where: { crmAddressId: address.id, parentType: 'customer'} }
+                db.Addresses.destroy(
+                    {where: { crmAddressId: address.id, parentType: addressParentType.Customer} }
                 )
             ));
 
@@ -55,9 +56,9 @@ export default async (req: Request, res: Response): Promise<Response> => {
                 }
             )
 
-            const draftAdressesIds = await db.Addresess.findAll(
+            const draftAdressesIds = await db.Addresses.findAll(
                 {
-                    where: { parentId: customerRecord.id, parentType: 'customer'},
+                    where: { parentId: customerRecord.id, parentType: addressParentType.Customer},
                     attributes: ['crmAddressId']
                 }
             )

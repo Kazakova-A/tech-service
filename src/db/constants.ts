@@ -1,6 +1,6 @@
 import * as moment from 'moment-timezone';
 
-import { JobStatuses } from './types';
+import { JobStatuses, addressParentType } from './types';
 
 export const BRANDS = [
     'asko',
@@ -66,14 +66,14 @@ export const TYPES = [
 export const DEFAULT_ZIP = 94022;
 const now = new Date();
 
-export const ADDRESESSDATA: any[] = [
+export const ADDRESSESDATA: any[] = [
         {
             street: 'Clinton Rd',
             houseNumber: '23',
             city: 'Los Altos',
             state: 'CA',
             parentId: 1,
-            parentType: 'customer',
+            parentType: addressParentType.Customer,
         },
         {
             street: '35th street',
@@ -81,7 +81,7 @@ export const ADDRESESSDATA: any[] = [
             city: 'Los Altos',
             state: 'CA',
             parentId: 2,
-            parentType: 'customer',
+            parentType: addressParentType.Customer,
         },
         {
             street: 'Monky Rd',
@@ -89,7 +89,7 @@ export const ADDRESESSDATA: any[] = [
             city: 'Los Altos',
             state: 'CA',
             parentId: 3,
-            parentType: 'customer',
+            parentType: addressParentType.Customer,
         },
         {
             street: 'Siply Rd',
@@ -97,7 +97,7 @@ export const ADDRESESSDATA: any[] = [
             city: 'Los Altos',
             state: 'CA',
             parentId: 4,
-            parentType: 'customer',
+            parentType: addressParentType.Customer,
         },
         {
             street: 'Siply Rd',
@@ -105,7 +105,7 @@ export const ADDRESESSDATA: any[] = [
             city: 'Los Altos',
             state: 'CA',
             parentId: 5,
-            parentType: 'employee',
+            parentType: addressParentType.Employees,
         },
     ]
 

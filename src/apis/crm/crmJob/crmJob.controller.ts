@@ -45,7 +45,7 @@ export default async (req: Request, res: Response): Promise<Response> => {
                 }
             )
 
-            const currentAddress = await db.Addresess.findOne(
+            const currentAddress = await db.Addresses.findOne(
                 {where: { crmAddressId: job.address.id} }
             )
 
