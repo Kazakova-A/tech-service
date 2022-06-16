@@ -120,7 +120,7 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
                 })
             })
             .flat()
-            .sort((a,b) => a.workDay > b.workDay ? 1 : a.start >= b.start ? 1 : -1);
+            .sort((a,b) => a.day - b.day || a.start - b.start);
 
         return response(req, res, rs[200], sm.ok, result);
     } catch (error) {
