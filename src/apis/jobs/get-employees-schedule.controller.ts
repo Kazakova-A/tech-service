@@ -24,6 +24,10 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
         };
 
         const getLastAddress = async ( jobs: any, workDay: number, scheduleStartJob: number, employee: any) => {
+            const currentEmployee = jobs[workDay].filter(( item: any ) => {
+                return item.employeeId < employee.id;
+            })
+
             const JobsBeforeNext = jobs[workDay].filter(( item: any ) => {
                 const startTimeJob = moment(item.scheduledStart * 1000).tz(employee.timezone).hour()
                 return startTimeJob < scheduleStartJob
