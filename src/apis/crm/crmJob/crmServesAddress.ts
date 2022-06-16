@@ -18,7 +18,7 @@ export const createAddress = (address: addressesType, customerRecordId: string) 
         city: address.city,
         state: address.state,
         parentId: customerRecordId,
-        parentType: addressParentType.Customer,
+        parentType: addressParentType.Job,
         zip: address.zip,
         country: address.country
     })
@@ -30,7 +30,7 @@ export const updateAddress = (address: addressesType, customerRecordId: string) 
         city: address.city,
         state: address.state,
         parentId: customerRecordId,
-        parentType: addressParentType.Customer,
+        parentType: addressParentType.Job,
         zip: address.zip,
         country: address.country
     },
