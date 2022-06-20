@@ -45,18 +45,6 @@ export default async (req: Request, res: Response): Promise<Response> => {
                 }
             )
 
-            const currentAddress = await db.Addresess.findOne(
-                {where: { crmAddressId: job.address.id} }
-            )
-
-            if (currentAddress) {
-                console.log("updateAddress", currentAddress)
-                await updateAddress(job.address, currentCustomerId.id)
-            } else {
-                console.log("createAddress")
-                await createAddress(job.address, currentCustomerId.id)
-            }
-
             const crmEmployeeIds = job.assigned_employees.map((employee) => employee.id);
             const existEmployeeses = await db.Employees.findAll({
                 where: {
@@ -85,6 +73,23 @@ export default async (req: Request, res: Response): Promise<Response> => {
                 await updateJob(job, currentCustomerId.id, currentEmployeesId.id)
             } else {
                 await createJob(job, currentCustomerId.id, currentEmployeesId.id)
+            }
+
+            const currentJobId = await db.Jobs.findOne(
+                {
+                    where: { crmJobId: job.id},
+                    attributes: ['id']
+                }
+            )
+
+            const currentAddress = await db.Addresses.findOne(
+                {where: { crmAddressId: job.address.id} }
+            )
+
+            if (currentAddress) {
+                await updateAddress(job.address, currentJobId.id)
+            } else {
+                await createAddress(job.address, currentJobId.id)
             }
         }
 

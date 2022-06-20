@@ -6,6 +6,7 @@ import {
 } from '../config';
 import response from '../utilities/responses';
 import db from '../db';
+import { addressParentType } from '../db/types'
 import { JobsRequest } from './get-employess-by-filters';
 import getFirstDays from '../utilities/get-first-three-days';
 
@@ -34,10 +35,10 @@ export default async (req: JobsRequest, res: Response, next: any): Promise<Respo
         firstDayJobs.forEach(async(item: {
             address: any; id: any; 
         }) => {
-            const address = await db.Addresess.findOne({
+            const address = await db.Addresses.findOne({
                 where: {
                     parentId: item.id,
-                    parentType: "Job",
+                    parentType: addressParentType.Job,
                 }
             })
             item.address = address;
@@ -57,10 +58,10 @@ export default async (req: JobsRequest, res: Response, next: any): Promise<Respo
         secondDayJobs.forEach(async(item: {
             address: any; id: any; 
         }) => {
-            const address = await db.Addresess.findOne({
+            const address = await db.Addresses.findOne({
                 where: {
                     parentId: item.id,
-                    parentType: "Job",
+                    parentType: addressParentType.Job,
                 }
             })
             item.address = address;
@@ -80,10 +81,10 @@ export default async (req: JobsRequest, res: Response, next: any): Promise<Respo
         thirsDayJobs.forEach(async(item: {
             address: any; id: any; 
         }) => {
-            const address = await db.Addresess.findOne({
+            const address = await db.Addresses.findOne({
                 where: {
                     parentId: item.id,
-                    parentType: "Job",
+                    parentType: addressParentType.Job,
                 }
             })
             item.address = address;

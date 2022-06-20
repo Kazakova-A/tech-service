@@ -1,11 +1,6 @@
 import { Generic, JobStatuses } from '../types';
 
-export const addressParentType = {
-  job: "job",
-  customer: "customer",
-  employees: "emploees"
-};
-export interface AddresessData extends Generic {
+export interface AddressesData extends Generic {
   crmAddressId: string;
   street: string;
   houseNumber: string;
@@ -21,7 +16,7 @@ export default (
   database: any,
   DataTypes: any,
 ) => database.define(
-  'Addresess',
+  'Addresses',
   {
     crmAddressId: {
       type: DataTypes.STRING,
@@ -56,7 +51,7 @@ export default (
     },
   },
   {
-    tableName: 'Addresess',
+    tableName: 'Addresses',
     timestamps: true,
   }
   );

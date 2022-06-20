@@ -11,3 +11,9 @@ export enum JobStatuses {
   in_progress ='in_progress',
   completed ='completed',
 }
+
+export enum addressParentType {
+  Job = "Job",
+  Customer = "Customer",
+  Employees = "Employees",
+};

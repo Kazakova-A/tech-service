@@ -7,16 +7,18 @@ import {
   TIMEZONE,
 } from '../../config';
 import db from '../../db';
-import { JobStatuses } from '../../db/types';
+import { JobStatuses, addressParentType } from '../../db/types';
 import { BRANDS, DEFAULT_ZIP, TYPES } from '../../db/constants';
 import generate from '../../utilities/generator';
 import * as moment from 'moment-timezone';
 
 export default async (req: Request, res: Response): Promise<Response> => {
   try {
-    const listEmployees = [...generate(3)];
 
-    const employeesPromises = listEmployees.map((item, index) => {
+    // create employees
+    const listEmployeeses = [...generate(3)];
+
+    const employeesPromises = listEmployeeses.map((item, index) => {
       return db.Employees.create({
         zip: DEFAULT_ZIP,
         firstName: `Peter the ${index}`,
@@ -29,27 +31,42 @@ export default async (req: Request, res: Response): Promise<Response> => {
       })
     });
 
-    const employees = await Promise.all(employeesPromises);
+    const employeeses = await Promise.all(employeesPromises);
 
-    const employeeAddresses = employees.map((employeesItem: any) => {
-      db.Addresess.create({
+    // create addresses for employees
+    const employeeAddresses = employeeses.map((employeesItem: any) => {
+      db.Addresses.create({
         street: `Clinton Rd`,
-        city: 'Los Altos',
+        city: 'JforE Employees',
         state: 'CA',
         zip: 94022,
         country: 'USA',
         parentId: employeesItem.id,
-        parentType: "employee",
+        parentType: addressParentType.Employees,
       })
     })
 
     await Promise.all(employeeAddresses);
 
+    // create customer
     const customer = await db.Customers.create({
         firstName: `Crisital the 1`,
         lastName: `Petrov`,
         email: `user1@example.com`,
-      })
+        mobileNumber: `+1(444)311-44-58`,
+        homeNumber: `33-22-11`,
+        workNumber: `88-88-88`,
+    })
+
+    await db.Addresses.create({
+      street: `Almond Ave`,
+      houseNumber: `№ 99`,
+      city: `JforE Customer`,
+      state: `CA`,
+      zip: 94022,
+      parentId: customer.id,
+      parentType: addressParentType.Customer,
+    });
 
     const spentTime = () => Math.floor(Math.random() * 40) + 40;
     const usedBrend = () => BRANDS[Math.floor(Math.random() * 40)];
@@ -60,7 +77,7 @@ export default async (req: Request, res: Response): Promise<Response> => {
     const brand = () => Math.floor(Math.random() * 41) + 1;
     const types = () => Math.floor(Math.random() * 11) + 1;
 
-    const employeeJobs = employees.map((employeesItem: any, index: number) => {
+    const employeeJobs = employeeses.map((employees: any, index: number) => {
       let day = 1;
       const scheduled = (timeToWork:number, indexJob:number) => {
         const now = new Date();
@@ -79,7 +96,7 @@ export default async (req: Request, res: Response): Promise<Response> => {
           scheduledStart: scheduled(0, index),
           scheduledEnd: scheduled(2, index),
           technicTypes: usedTypes(),
-          employeeId: employeesItem.id,
+          employeeId: employees.id,
           name: 'name',
           description: 'description',
           notes: 'notes',
@@ -91,32 +108,32 @@ export default async (req: Request, res: Response): Promise<Response> => {
           day += 1;
         };
 
-        await db.Addresess.create({
+        await db.Addresses.create({
           street: `street${index}`,
           houseNumber: `houseNumber ${index}`,
-          city: `city${index}`,
+          city: `JforE job${index}`,
           state: `state${index}`,
           zip: 94022,
           parentId: draftJob.id,
-          parentType: 'Job',
+          parentType: addressParentType.Job,
         });
     
         await db.SupportedBrands.create({
             brandId: brand(),
-            employeeId: employeesItem.id,
+            employeeId: employees.id,
         });
         await db.SupportedBrands.create({
             brandId: brand(),
-            employeeId: employeesItem.id,
+            employeeId: employees.id,
         });
     
         await db.SupportedTypes.create({
             typeId: types(),
-            employeeId: employeesItem.id,
+            employeeId: employees.id,
         });
         await db.SupportedTypes.create({
             typeId: types(),
-            employeeId: employeesItem.id,
+            employeeId: employees.id,
         });
 
         return draftJob;
@@ -124,7 +141,7 @@ export default async (req: Request, res: Response): Promise<Response> => {
       return jobsPromises
     });
 
-    return response(req, res, rs[200], sm.ok, employeeJobs);
+    return response(req, res, rs[200], sm.ok);
   } catch (error) {
         return response(req, res, rs[500], sm.internalServerError, error);
   }

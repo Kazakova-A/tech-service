@@ -8,6 +8,7 @@ import {
 
 import response from '../../utilities/responses';
 import db from '../../db';
+import { addressParentType } from '../../db/types'
 
 export default async (req: Request, res: Response): Promise<Response> => {
     try {
@@ -24,10 +25,10 @@ export default async (req: Request, res: Response): Promise<Response> => {
             ]
         })
 
-        const nextAddress = await db.Addresess.findOne({
+        const nextAddress = await db.Addresses.findOne({
             where: {
                 [Op.and]: [
-                    { parentType: "customer" },
+                    { parentType: addressParentType.Customer },
                     { parentId: timeNextJobForEmployees.customerId }
                 ]
             }

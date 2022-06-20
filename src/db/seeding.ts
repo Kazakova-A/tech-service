@@ -3,12 +3,12 @@ import {
   TYPES,
   DEFAULT_ZIP,
   JOBS_MOCK_DATA,
-  ADDRESESSDATA,
+  ADDRESSESDATA,
 } from './constants';
 import { TIMEZONE } from '../config';
 import log from '../utilities/log';
 import generate from '../utilities/generator';
-import { addressParentType } from './models/addresess'
+import { addressParentType } from './types'
 
 export default async (db: any, seeding: boolean = false): Promise<Error | void> => {
   try {
@@ -46,16 +46,16 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
     ));
     const сustomers = await Promise.all(customersPromises);
 
-    // create Addresess for сustomers
+    // create Addresses for сustomers
 
-    const addressesCustomerPromises = сustomers.map(( сustomer, index ) => db.Addresess.create({
+    const addressesCustomerPromises = сustomers.map(( сustomer, index ) => db.Addresses.create({
       street: `Almond Ave ${index}`,
       houseNumber: `№ ${index}`,
-      city: `Los Altos ${index}`,
+      city: `Seed customer ${index}`,
       state: `CA ${index}`,
       zip: 94022,
       parentId: сustomer.id,
-      parentType: addressParentType.customer,
+      parentType: addressParentType.Customer,
     }));
     await Promise.all(addressesCustomerPromises);
 
@@ -85,16 +85,16 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
     });
     const employees = await Promise.all(employeesPromises);
 
-    // create Addresess for emploees
+    // create Addresses for emploees
 
-    const addressesEmploeesPromises = сustomers.map(( emploees, index ) => db.Addresess.create({
+    const addressesEmploeesPromises = сustomers.map(( emploees, index ) => db.Addresses.create({
       street: `Eonky Rd ${index}`,
       houseNumber: `№ 5${index}`,
-      city: `Eos Eltos ${index}`,
+      city: `Seed Employees ${index}`,
       state: `CE ${index}`,
       zip: 94022,
       parentId: emploees.id,
-      parentType: addressParentType.employees,
+      parentType: addressParentType.Employees,
     }));
     await Promise.all(addressesEmploeesPromises);
 
@@ -181,18 +181,18 @@ export default async (db: any, seeding: boolean = false): Promise<Error | void> 
     ));
     const jobs = await Promise.all(jobPromises);
 
-    // create Addresess for job
+    // create Addresses for job
 
-    const addresessJobPromises = jobs.map(( job, index ) => db.Addresess.create({
+    const addressesJobPromises = jobs.map(( job, index ) => db.Addresses.create({
       street: `street${index}`,
       houseNumber: `houseNumber ${index}`,
-      city: `city${index}`,
+      city: `seed job ${index}`,
       state: `state${index}`,
       zip: 94022,
       parentId: job.id,
-      parentType: addressParentType.job,
+      parentType: addressParentType.Job,
     }));
-    await Promise.all(addresessJobPromises);
+    await Promise.all(addressesJobPromises);
 
     return log('-- database: seeding is done');
   } catch (error) {
