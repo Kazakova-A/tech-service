@@ -37,22 +37,11 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
         const getLastAddress = async ( jobs: jobsList, workDay: number, scheduleStartJob: number, employee: EmployeesData) => {
             const JobsBeforeCurrent = jobs[workDay].filter(( item: any ) => {
                 const startTimeJob = moment(item.scheduledStart * 1000).tz(employee.timezone).hour()
-                return startTimeJob < scheduleStartJob && employee.id === item.employeeId
+                return startTimeJob < scheduleStartJob + 3 && employee.id === item.employeeId
             })
 
-            // list of jobs only for the currentEmployee
-            const currentEmployeeJobs = jobs[workDay].filter((item: currentEmployeeJobsType) => {
-                return item.employeeId === employee.id;
-
-            })
-
-            // list of jobs before actual time only for the currentEmployee
-            const listOfJobsBeforeActualTime = currentEmployeeJobs.filter((item: currentEmployeeJobsType) => {
-                return moment(item.scheduledStart * 1000).tz(employee.timezone).hour() < scheduleStartJob
-            })
-
-            if (listOfJobsBeforeActualTime.length === 0) {
-                const employeeAddress = await db.Addresses.findOne({
+            if (JobsBeforeCurrent.length === 0) {
+                const currentAddress = await db.Addresses.findOne({
                     where: {
                         [Op.and]: [
                             { parentType: addressParentType.Employees },
@@ -60,15 +49,17 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
                         ]
                     }
                 });
-                return employeeAddress;
+                return ( currentAddress ? {
+                    id: currentAddress.id,
+                    street: currentAddress.street,
+                    houseNumber: currentAddress.houseNumber,
+                    city: currentAddress.city,
+                } : {}
+            )
             }
-            
+
             const JobsBeforeNextSort = JobsBeforeCurrent.sort(( a: any, b: any ) => a.scheduledStart > b.scheduledStart ? 1 : -1);
             const currentAddress = JobsBeforeNextSort[JobsBeforeNextSort.length - 1].address
-
-                        
-            console.log('employee.id', employee.id);
-            console.log('JobsBeforeNextSort', JobsBeforeNextSort);
 
             return ( currentAddress ? {
                     id: currentAddress.id,
