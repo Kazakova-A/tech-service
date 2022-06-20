@@ -38,6 +38,7 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
             // list of jobs only for the currentEmployee
             const currentEmployeeJobs = jobs[workDay].filter((item: currentEmployeeJobsType) => {
                 return item.employeeId === employee.id;
+
             })
 
             // list of jobs before actual time only for the currentEmployee
@@ -121,7 +122,11 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
                 })
             })
             .flat()
+<<<<<<< HEAD
             .sort((a: any, b: any) => a.day - b.day || a.start - b.start);
+=======
+            .sort((a,b) => a.day - b.day || a.start - b.start);
+>>>>>>> e1aae05ebcc191c5859f89005921f2956aa42c9e
 
         return response(req, res, rs[200], sm.ok, result);
     } catch (error) {
