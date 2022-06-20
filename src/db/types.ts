@@ -15,5 +15,5 @@ export enum JobStatuses {
 export enum addressParentType {
   Job = "Job",
   Customer = "Customer",
-  Employees = "Emploees",
+  Employees = "Employees",
 };
