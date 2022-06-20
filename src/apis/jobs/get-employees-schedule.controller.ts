@@ -24,16 +24,13 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
         };
 
         const getLastAddress = async ( jobs: any, workDay: number, scheduleStartJob: number, employee: any) => {
-            const currentEmployee = jobs[workDay].filter(( item: any ) => {
-                return item.employeeId < employee.id;
-            })
-
-            const JobsBeforeNext = jobs[workDay].filter(( item: any ) => {
+            const JobsBeforeCurrent = jobs[workDay].filter(( item: any ) => {
                 const startTimeJob = moment(item.scheduledStart * 1000).tz(employee.timezone).hour()
-                return startTimeJob < scheduleStartJob
+                return startTimeJob < scheduleStartJob && employee.id === item.employeeId
             })
 
-            if (JobsBeforeNext.length === 0) {
+
+            if (JobsBeforeCurrent.length === 0) {
                 const currentAddress = await db.Addresses.findOne({
                     where: {
                         [Op.and]: [
@@ -52,8 +49,12 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
                 )
             }
 
-            const JobsBeforeNextSort = JobsBeforeNext.sort(( a: any, b: any ) => a.scheduledStart > b.scheduledStart ? 1 : -1);
+            const JobsBeforeNextSort = JobsBeforeCurrent.sort(( a: any, b: any ) => a.scheduledStart > b.scheduledStart ? 1 : -1);
             const currentAddress = JobsBeforeNextSort[JobsBeforeNextSort.length - 1].address
+
+                        
+            console.log('employee.id', employee.id);
+            console.log('JobsBeforeNextSort', JobsBeforeNextSort);
 
             return ( currentAddress ? {
                     id: currentAddress.id,

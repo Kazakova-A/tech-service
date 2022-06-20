@@ -40,7 +40,7 @@ export default async (req: JobsRequest, res: Response, next: any): Promise<Respo
     }
 
     const query = `
-        SELECT e."id", e."email", e."firstName", e."zip", e."startTime", e."endTime", e."timezone", b."label" as "brand", t."label" as "type"
+        SELECT DISTINCT e."id", e."email", e."firstName", e."zip", e."startTime", e."endTime", e."timezone", b."label" as "brand", t."label" as "type"
           FROM "Employees" e
           LEFT JOIN "SupportedTypes" st ON e."id" = st."employeeId"
           LEFT JOIN "SupportedBrands" sb ON e."id" = sb."employeeId"
