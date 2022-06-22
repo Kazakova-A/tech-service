@@ -15,6 +15,7 @@ import { JobsRequest } from 'middlewares/get-employess-by-filters';
 import moment = require('moment');
 import { JobsData } from './../../db/models/jobs';
 import { AddressesData } from './../../db/models/addresses';
+import getDiagnosticCoefficient from '../../middlewares/get-diagnostic-coefficient';
 
 interface currentEmployeeJobsType extends JobsData {
     address: AddressesData
@@ -26,7 +27,7 @@ interface jobsList {
 
 export default async (req: JobsRequest, res: Response): Promise<Response> => {
     try {
-        const { jobs, employees, nextThreeDays } = req;
+        const { brand, technicType, jobs, employees, nextThreeDays } = req;
         const workHours = {
             [nextThreeDays.firstDay]: getWorkingHours(jobs[nextThreeDays.firstDay]),
             [nextThreeDays.secondDay]: getWorkingHours(jobs[nextThreeDays.secondDay]),
@@ -34,8 +35,8 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
         };
 
 
-        const getLastAddress = async ( jobs: jobsList, workDay: number, scheduleStartJob: number, employee: EmployeesData) => {
-            const JobsBeforeCurrent = jobs[workDay].filter(( item: any ) => {
+        const getLastAddress = async (jobs: jobsList, workDay: number, scheduleStartJob: number, employee: EmployeesData) => {
+            const JobsBeforeCurrent = jobs[workDay].filter((item: any) => {
                 const startTimeJob = moment(item.scheduledStart * 1000).tz(employee.timezone).hour()
                 return startTimeJob < scheduleStartJob + 3 && employee.id === item.employeeId
             })
@@ -49,24 +50,24 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
                         ]
                     }
                 });
-                return ( currentAddress ? {
+                return (currentAddress ? {
                     id: currentAddress.id,
                     street: currentAddress.street,
                     houseNumber: currentAddress.houseNumber,
                     city: currentAddress.city,
                 } : {}
-            )
+                )
             }
 
-            const JobsBeforeNextSort = JobsBeforeCurrent.sort(( a: any, b: any ) => a.scheduledStart > b.scheduledStart ? 1 : -1);
+            const JobsBeforeNextSort = JobsBeforeCurrent.sort((a: any, b: any) => a.scheduledStart > b.scheduledStart ? 1 : -1);
             const currentAddress = JobsBeforeNextSort[JobsBeforeNextSort.length - 1].address
 
-            return ( currentAddress ? {
-                    id: currentAddress.id,
-                    street: currentAddress.street,
-                    houseNumber: currentAddress.houseNumber,
-                    city: currentAddress.city,
-                } : {}
+            return (currentAddress ? {
+                id: currentAddress.id,
+                street: currentAddress.street,
+                houseNumber: currentAddress.houseNumber,
+                city: currentAddress.city,
+            } : {}
             )
         }
 
@@ -79,31 +80,35 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
                         end: 10,
                         status: getEmployeeStatus(employee, workStatus, 8, nextThreeDays.start, workDay),
                         day: workDay,
-                        address: await getLastAddress(jobs, workDay, 8, employee)
+                        address: await getLastAddress(jobs, workDay, 8, employee),
+                        diagnosticCoefficient: await getDiagnosticCoefficient(employee.id, brand, technicType)
                     },
                     {
                         start: 10,
                         end: 12,
                         status: getEmployeeStatus(employee, workStatus, 10, nextThreeDays.start, workDay),
                         day: workDay,
-                        address: await getLastAddress(jobs, workDay, 10, employee)
+                        address: await getLastAddress(jobs, workDay, 10, employee),
+                        diagnosticCoefficient: await getDiagnosticCoefficient(employee.id, brand, technicType)
                     },
                     {
                         start: 12,
                         end: 14,
                         status: getEmployeeStatus(employee, workStatus, 12, nextThreeDays.start, workDay),
                         day: workDay,
-                        address: await getLastAddress(jobs, workDay, 12, employee)
+                        address: await getLastAddress(jobs, workDay, 12, employee),
+                        diagnosticCoefficient: await getDiagnosticCoefficient(employee.id, brand, technicType)
                     },
                     {
                         start: 16,
                         end: 18,
                         status: getEmployeeStatus(employee, workStatus, 16, nextThreeDays.start, workDay),
                         day: workDay,
-                        address: await getLastAddress(jobs, workDay, 16, employee)
+                        address: await getLastAddress(jobs, workDay, 16, employee),
+                        diagnosticCoefficient: await getDiagnosticCoefficient(employee.id, brand, technicType)
                     },
                 ].filter(item => item.status === 'available')
-            }
+                            }
         );
 
         const lineList = await Promise.all([...employees.map(async (employee) => {
@@ -117,7 +122,6 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
             ]
         })])
 
-
         const result = lineList.flat()
             .filter((item: any) => item.workTime.length > 0)
             .map(item => {
@@ -127,8 +131,7 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
                 })
             })
             .flat()
-            .sort((a,b) => a.day - b.day || a.start - b.start);
-
+            .sort((a, b) => a.day - b.day || a.start - b.start);
         return response(req, res, rs[200], sm.ok, result);
     } catch (error) {
         return response(req, res, rs[500], sm.internalServerError, error);

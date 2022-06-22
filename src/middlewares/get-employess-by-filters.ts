@@ -26,7 +26,9 @@ export interface JobsRequest extends Request<any, any, any, ReqQuery> {
     secondDay: number;
     thirdDay: number;
     end: number;
-  }
+  },
+  brand: string,
+  technicType: string
 }
 
 export default async (req: JobsRequest, res: Response, next: any): Promise<Response> => {
@@ -58,6 +60,8 @@ export default async (req: JobsRequest, res: Response, next: any): Promise<Respo
     }
 
     req.employees = availableEmployees;
+    req.brand = brand;
+    req.technicType = type;
 
     return next();
   } catch (error) {
