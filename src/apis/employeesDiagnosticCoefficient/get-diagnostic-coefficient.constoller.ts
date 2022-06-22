@@ -9,6 +9,7 @@ import {
 import response from '../../utilities/responses';
 import db from '../../db';
 import { JobsRequest } from 'middlewares/get-employess-by-filters';
+import getDiagnosticCoefficient from '../../middlewares/get-diagnostic-coefficient';
 interface diagnosticTimeType {
     time: string;
 }
@@ -16,8 +17,7 @@ interface diagnosticTimeType {
 export default async (req: JobsRequest, res: Response): Promise<Response> => {
     try {
         let diagnosticTime: diagnosticTimeType[] = [];
-        let result: number = 0;
-
+        
         const numberEmployees = await db.Employees.findOne({
             where: {id: req.params.id}
         })
@@ -26,94 +26,7 @@ export default async (req: JobsRequest, res: Response): Promise<Response> => {
             return response(req, res, rs[404], sm.employeesNotFound);
         }
 
-        const numberJobForEmployeesBrandAndType = await db.Jobs.count({
-            where: {
-                [Op.and]: [
-                    {employeeId: req.params.id},
-                    {brand: req.params.brand},
-                    {technicTypes: req.params.type},
-                    {workStatus: 'completed'}
-                ]
-            }
-        })
-
-        const numberJobForEmployeesBrand = await db.Jobs.count({
-            where: {
-                [Op.and]: [
-                    {employeeId: req.params.id},
-                    {brand: req.params.brand},
-                    {workStatus: 'completed'}
-                ]
-            }
-        })
-
-        const numberJobForEmployees = await db.Jobs.count({
-            where: {
-                [Op.and]: [
-                    {employeeId: req.params.id},
-                    {workStatus: 'completed'}
-                ]
-            }
-        })
-
-        const avgDiagnosticTime = ( diagnosticTime: diagnosticTimeType[]) =>  {
-            return diagnosticTime.reduce((sum, current) => (sum + Number(current.time)), 0) / diagnosticTime.length;
-        };
-
-        if ( numberJobForEmployeesBrandAndType > 9 ) {
-            diagnosticTime = await db.Jobs.findAll({
-                where: {
-                    [Op.and]: [
-                        {employeeId: req.params.id},
-                        {brand: req.params.brand},
-                        {technicTypes: req.params.type},
-                        {workStatus: 'completed'}
-                    ]
-                },
-                group: ['Jobs.id'],
-                order: [
-                    ['scheduledEnd', 'DESC']
-                ],
-                limit: 10,
-                attributes: [[Sequelize.fn(`ROUND`,  Sequelize.fn('avg', Sequelize.col('diagnosticSpentTime'))),'time']]
-            })
-            result = avgDiagnosticTime(diagnosticTime)
-        } else if (numberJobForEmployeesBrand > 9) {
-            diagnosticTime = await db.Jobs.findAll({
-                where: {
-                    [Op.and]: [
-                        {employeeId: req.params.id},
-                        {brand: req.params.brand},
-                        {workStatus: 'completed'}
-                    ]
-                },
-                group: ['Jobs.id'],
-                order: [
-                    ['scheduledEnd', 'DESC']
-                ],
-                limit: 10,
-                attributes: [[Sequelize.fn(`ROUND`,  Sequelize.fn('avg', Sequelize.col('diagnosticSpentTime'))),'time']]
-            })
-            result = avgDiagnosticTime(diagnosticTime)
-        } else if (numberJobForEmployees > 9) {
-            diagnosticTime = await db.Jobs.findAll({
-                where: {
-                    [Op.and]: [
-                        {employeeId: req.params.id},
-                        {workStatus: 'completed'}
-                    ]
-                },
-                group: ['Jobs.id'],
-                order: [
-                    ['scheduledEnd', 'DESC']
-                ],
-                limit: 10,
-                attributes: [[Sequelize.fn('avg', Sequelize.col('diagnosticSpentTime')),'time']]
-            })
-            result = avgDiagnosticTime(diagnosticTime)
-        } else {
-            result = 80;
-        }
+        const result = await getDiagnosticCoefficient(req.params.id, req.params.brand, req.params.type);
 
         return response(req, res, rs[200], sm.ok, result);
     } catch (error) {
